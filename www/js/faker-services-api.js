@@ -2,9 +2,9 @@ function fakeNetworkDelay($timeout, f) {
     $timeout(f, Math.random() * 1000); 
 }
 
-function apiBaseService($q, $timeout) {
+function apiBaseService(_values, $q, $timeout) {
     var _this = this;
-    this.values = [];
+    this.values = _values;
     var values = this.values;
     
     this.add = function(o) {
@@ -16,6 +16,33 @@ function apiBaseService($q, $timeout) {
                 });
             else
                 fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
+        });
+    }
+    
+    this.removeById = function(id) {
+        if(typeof id == 'string') id = parseInt(id);
+        return $q(function(resolve, reject) {
+            if(Math.random() >= 0){
+                    values = _.filter(values, function(o) { return o.id != id }); 
+                    fakeNetworkDelay($timeout, function() { 
+                    resolve(null); 
+                });
+            }else{
+                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
+            }
+        });
+    }
+    
+    this.remove = function(_o) {
+        return $q(function(resolve, reject) {
+            if(Math.random() >= 0){
+                    values = _.filter(values, function(o) { return o.id != _o.id }); 
+                    fakeNetworkDelay($timeout, function() { 
+                    resolve(null); 
+                });
+            }else{
+                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
+            }
         });
     }
     
@@ -64,29 +91,40 @@ angular.module('services-api', [])
     this.user = undefined;
     
     
-    this.fakeUsers = [];
-    this.fakeUsers.push({
+    this.values = [];
+    var values = this.values;
+    values.push({
+        id:0,
         fullName:'Aqilah Shahrul',
         memberId:'9988112132301195',
         username:'Aqilah Shahrul',
-        thumb:faker.image.avatar()
+        thumb:faker.image.avatar(),
+        nric:'901202-08-5678',
+        contact:faker.phone.phoneNumber()
     });
     
-    this.fakeUsers.push({
+    values.push({
+        id:1,
         fullName:'Jefferson Ng',
         memberId:'9988112132301201',
         username:'Jefferson Ng',
-        thumb:faker.image.avatar()
+        thumb:faker.image.avatar(),
+        nric:'901202-08-5678',
+        contact:faker.phone.phoneNumber()
     });
-    
-    this.fakeUsers.push({
+    values.push({
+        id:2,
         fullName:'Mahendran Arjuna',
         memberId:'9988112132301293',
         username:'Mahendran Arjuna',
-        thumb:faker.image.avatar()
+        thumb:faker.image.avatar(),
+        nric:'901202-08-5678',
+        contact:faker.phone.phoneNumber()
     });
     
-    this.login = function(username, password) {
+    ret = new apiBaseService(values,$q,$timeout);
+    
+    ret.login = function(username, password) {
         return $q(function(resolve, reject) {
             if(Math.random() >= 0)
                 fakeNetworkDelay($timeout, function() {
@@ -96,7 +134,7 @@ angular.module('services-api', [])
                     }
                     
                     
-                    var founded = _.find(_this.fakeUsers, {'username':username});
+                    var founded = _.find(_this.values, {'username':username});
                     if(founded) {
                         _this.user = founded;
                         resolve(founded);                        
@@ -109,13 +147,15 @@ angular.module('services-api', [])
         });
     }
     
-    this.logout = function() {
+    ret.logout = function() {
         _this.user = undefined;
     }
     
-    this.getUser = function() {
+    ret.getUser = function() {
         return _this.user;
     }
+    
+    return ret;
 })
 
 
@@ -133,14 +173,7 @@ angular.module('services-api', [])
         value.favourited = _.random(1) == 0;
         values.push(value);
     }
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 .service('apiPurchasedProperty', function($q,$timeout) {
@@ -165,27 +198,7 @@ angular.module('services-api', [])
         }
         values.push(value);
     }
-    
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    
-    this.getById = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    resolve(_.where(values, {'id':id})[0]);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 
@@ -200,27 +213,7 @@ angular.module('services-api', [])
         };
         values.push(value);
     }
-    
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    
-    this.getById = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    resolve(_.where(values, {'id':id})[0]);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 .service('apiConstructionProgress', function($q,$timeout) {
@@ -233,22 +226,8 @@ angular.module('services-api', [])
         };
         progresses.push(value);
     }
-    
-    var value = {
-        progresses: progresses,
-        project: {
-            id:1,
-            displayName: faker.company.companyName(),
-            thumb:faker.image.projectLogo(),
-        },
-
-        construction:{
-            id:1,
-            displayName: faker.company.companyName(),
-            thumb:faker.image.construction()
-        }
-    };
-    this.getByConstrucitonId = function(id) {
+    ret = new apiBaseService(values,$q,$timeout);
+    ret.getByConstrucitonId = function(id) {
         return $q(function(resolve, reject) {
             if(Math.random() >= 0)
                 fakeNetworkDelay($timeout, function() { resolve(value); });
@@ -256,27 +235,11 @@ angular.module('services-api', [])
                 fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
         });
     }
+    return ret;
 })
 
 .service('apiProperty', function($q,$timeout) {
     var values = [];
-    var index = 0;
-//    for(i = 0 ; i < 30 ; i++) {
-//        var value = 
-//        {
-//            project: {
-//                displayName : faker.company.projectName(),
-//                thumb:faker.image.projectLogo()
-//            },
-//            id:i,
-//            displayName: faker.company.propertyName(),
-//            thumb:faker.image.property(),
-//            type:_.random(2),
-//            description:faker.lorem.paragraphs(),
-//        };
-//        values.push(value);
-//    }
-    
     var ps = faker.table.properties();
     values.push(ps[0],ps[1],ps[2]);
     for(i = 3 ; i < 30 ; i++) {
@@ -294,26 +257,7 @@ angular.module('services-api', [])
         };
         values.push(value);
     }
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    
-    this.getById = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    resolve(_.where(values, {'id':id})[0]);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 .service('apiEvent', function($q,$timeout) {
@@ -337,31 +281,10 @@ angular.module('services-api', [])
         value.type = _.random(1);
         values.push(value);
     }
-    
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    
-    this.getById = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    resolve(_.where(values, {'id':id})[0]);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 .service('apiProject', function($q,$timeout) {
-    
     var values = [];
     this.values = values;
     for(i = 0 ; i < 10 ; i++) {
@@ -373,37 +296,7 @@ angular.module('services-api', [])
         value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
         values.push(value);
     }
-    
-    //this.prototype = apiBaseService.prototype;
-    console.log(this.protoype);
-    console.log(apiBaseService);
-    console.log(apiBaseService.__proto__);
-    console.log(apiBaseService.prototype);
-    console.log(this);
-    
-//    console.log(this.getAll());
-    
-//    this.getAll = function() {
-//        return $q(function(resolve, reject) {
-//            if(Math.random() >= 0)
-//                fakeNetworkDelay($timeout, function() { resolve(values); });
-//            else
-//                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-//        });
-//    }
-//    
-//    this.getById = function(id) {
-//        if(typeof id == 'string') id = parseInt(id);
-//        return $q(function(resolve, reject) {
-//            if(Math.random() >= 0)
-//                fakeNetworkDelay($timeout, function() {
-//                    var ret = _.where(values, {'id':id})[0];
-//                    resolve(ret);
-//                });
-//            else
-//                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-//        });
-//    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 .service('apiConsultant', function($q,$timeout) {
@@ -422,68 +315,13 @@ angular.module('services-api', [])
         value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
         values.push(value);
     }
-    
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    
-    this.getByProjectId = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    var ret = _.filter(values, function(o) { return o.project && o.project.id == id; } );
-                    resolve(ret);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    
-    this.getById = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    resolve(_.where(values, {'id':id})[0]);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 
 .service('apiVoucher', function($q,$timeout) {
     var values = faker.table.vouchers();
-    
-
-    
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    
-    this.getById = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    resolve(_.where(values, {'id':id})[0]);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 
@@ -497,7 +335,8 @@ angular.module('services-api', [])
     value.event = apiEvent.values[0];
     values.push(value);
     
-    this.addByEvent = function(event) {
+    ret = new apiBaseService(values,$q,$timeout);
+    ret.addByEvent = function(event) {
         return $q(function(resolve, reject) {
             if(Math.random() >= 0){
                 var value = {};
@@ -513,53 +352,7 @@ angular.module('services-api', [])
             }
         });
     }
-    
-    this.removeById = function(id) {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0){
-                    values = _.filter(values, function(o) { return o.id != id }); 
-                    fakeNetworkDelay($timeout, function() { 
-                    resolve(null); 
-                });
-            }else{
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-            }
-        });
-    }
-    
-    this.removeByEvent = function(event) {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0){
-                    values = _.filter(values, function(o) { return o.event.id != event.id }); 
-                    fakeNetworkDelay($timeout, function() { 
-                    resolve(null); 
-                });
-            }else{
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-            }
-        });
-    }
-    
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    this.getById = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    var ret = _.where(values, {'id':id})[0];
-                    resolve(ret);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return;
 })
 
 .service('apiDefectItemAreaLocation', function() {
@@ -677,9 +470,10 @@ angular.module('services-api', [])
 {displayName:'Office 2', id:108}
     
     ];
+    return new apiBaseService(values,$q,$timeout);
 })
 
-.service('apiDefectItemReason', function() {
+.service('apiDefectItemReason', function($q,$timeout) {
     var values = [];
     this.values = values;
     
@@ -687,10 +481,11 @@ angular.module('services-api', [])
         {id:0, displayName:'Not Applicable'},
         {id:1, displayName:'Work Of Nature'}
     ];
+    return new apiBaseService(values,$q,$timeout);
 })
 
 
-.service('apiDefectItemStatus', function() {
+.service('apiDefectItemStatus', function($q,$timeout) {
     var values = [];
     this.values = values;
     
@@ -699,9 +494,10 @@ angular.module('services-api', [])
         {id:2, displayName:'Not Started'},
         {id:3, displayName:'Completed'}
     ];
+    return new apiBaseService(values,$q,$timeout);
 })
          
-.service('apiDefectItemSeverity', function() {
+.service('apiDefectItemSeverity', function($q,$timeout) {
     var values = [];
     this.values = values;
     
@@ -710,89 +506,37 @@ angular.module('services-api', [])
         {id:2, displayName:'Medium'},
         {id:3, displayName:'High'}
     ];
+    return new apiBaseService(values,$q,$timeout);
 })
 
-.service('apiDefectType', function() {
+.service('apiDefectType', function($q,$timeout) {
     var values = [];
     this.values = values;
     
     values = [
-    {
-        id:0,
-        displayName:'Ceiling - C1  Rough surface / chipped / cracked / damaged / broken',
-    },
-    {
-        id:1,
-        displayName:'Ceiling - C4  Others',
-    },
-    {
-        id:2,
-        displayName:'Door (include door panel, frame, glazing, architrave, heelstone, roller shutter, etc) - D1  Rough surface / poor joint / chipped / cracked / damaged / dented / sagged / warped / scratched',
-    },
-    {
-        id:3,
-        displayName:'Door (include door panel, frame, glazing, architrave, heelstone, roller shutter, etc) - D2  Misaligned / unlevel',
-    },
-    {
-        id:4,
-        displayName:'Door (include door panel, frame, glazing, architrave, heelstone, roller shutter, etc) - D3  Visible gap / inconsistent gap / poor pointing',
-    },
-    {
-        id:5,
-        displayName:'Floor (include screeding, tiles, parquet, timber strips, etc) - F2  Rough surface / patchy / scratched',
-    },
-    {
-        id:6,
-        displayName:'Plaster Wall / Paintwork - PW2  Rough surface / bulging / hollowness / chipped / pin hole',
-    },
-    {
-        id:7,
-        displayName:'Sanitary wares & fittings / Plumbing - S1  Leaking (e.g. pipe, slab, water tank, etc.',
-    },
-    {
-        id:8,
-        displayName:'Wall Tiles - T1  Broken / chipped / cracked / hollowness',
-    },
-    {
-        id:9,
-        displayName:'Electrical - 13amp Power Point c/w Cover',
-    },
-    {
-        id:10,
-        displayName:'Electrical - Air Conditioner Point c/w Switch',
-    },
-    {
-        id:11,
-        displayName:'Electrical - Car Porch Light Point',
-    },
-    {
-        id:12,
-        displayName:'Electrical - DB Boxes & Cover',
-    },
-    {
-        id:13,
-        displayName:'Cleaning Services',
-    },
-    {
-        id:14,
-        displayName:'Cleaning Common Area',
-    },
-    {
-        id:15,
-        displayName:'Cleaning Staircase',
-    },
-    {
-        id:16,
-        displayName:'Cleaning Staircase',
-    },
-    {
-        id:17,
-        displayName:'Normal Cleaning',
-    }         
+    {id:0,displayName:'Ceiling - C1  Rough surface / chipped / cracked / damaged / broken',},
+    {id:1,displayName:'Ceiling - C4  Others',},
+    {id:2,displayName:'Door (include door panel, frame, glazing, architrave, heelstone, roller shutter, etc) - D1  Rough surface / poor joint / chipped / cracked / damaged / dented / sagged / warped / scratched',},
+    {id:3,displayName:'Door (include door panel, frame, glazing, architrave, heelstone, roller shutter, etc) - D2  Misaligned / unlevel',},
+    {id:4,displayName:'Door (include door panel, frame, glazing, architrave, heelstone, roller shutter, etc) - D3  Visible gap / inconsistent gap / poor pointing',},
+    {id:5,displayName:'Floor (include screeding, tiles, parquet, timber strips, etc) - F2  Rough surface / patchy / scratched',},
+    {id:6,displayName:'Plaster Wall / Paintwork - PW2  Rough surface / bulging / hollowness / chipped / pin hole',},
+    {id:7,displayName:'Sanitary wares & fittings / Plumbing - S1  Leaking (e.g. pipe, slab, water tank, etc.',},
+    {id:8,displayName:'Wall Tiles - T1  Broken / chipped / cracked / hollowness',},
+    {id:9,displayName:'Electrical - 13amp Power Point c/w Cover',},
+    {id:10,displayName:'Electrical - Air Conditioner Point c/w Switch',},
+    {id:11,displayName:'Electrical - Car Porch Light Point',},
+    {id:12,displayName:'Electrical - DB Boxes & Cover',},
+    {id:13,displayName:'Cleaning Services',},
+    {id:14,displayName:'Cleaning Common Area',},
+    {id:15,displayName:'Cleaning Staircase',},
+    {id:16,displayName:'Cleaning Staircase',},
+    {id:17,displayName:'Normal Cleaning',}         
     ];
+    return new apiBaseService(values,$q,$timeout);
 })
 
-.service('apiUnit', function($q,$timeout,apiProject) {
+.service('apiUnit', function($q,$timeout,apiProject, apiUser) {
     var values = [];
     
     for(i = 0 ; i < 200 ; i++) {
@@ -809,75 +553,16 @@ angular.module('services-api', [])
                 coords:''
             }]
         }];
-        value.owner = {
-            fullName:faker.name.lastName() + ' ' + faker.name.firstName(),
-            nric:'901202-08-5678',
-            contact:faker.phone.phoneNumber()
-        }
+        value.owner = _.sample(apiUser.values);
         value.project = _.sample(apiProject.values);
         values.push(value);
     }
-    
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    
-    this.getByProjectId = function(projectId) {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    var ret = _.filter(values, function(o) { return o.project.id == projectId; } );
-                    resolve(ret); 
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    
-    this.getById = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    resolve(_.where(values, {'id':id})[0]);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 .service('apiDefectItem', function($q,$timeout) {
     var values = [];
-    
-    this.addByDefectItem = function(defectItem) {
-        values.push(defectItem);
-    }
-    
-    this.getAll = function() {
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(values); });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
-    this.getById = function(id) {
-        if(typeof id == 'string') id = parseInt(id);
-        return $q(function(resolve, reject) {
-            if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() {
-                    resolve(_.where(values, {'id':id})[0]);
-                });
-            else
-                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
-        });
-    }
+    return new apiBaseService(values,$q,$timeout);
 })
 
 
