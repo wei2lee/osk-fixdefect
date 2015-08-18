@@ -15,6 +15,8 @@
     "ionic-material": "~0.4.2",
     "ionic-rating": "~0.1.0",
     "angular-filter": "~0.5.5",
-    "angular-qrcode": "monospaced/angular-qrcode#~6.0.3"
+    "angular-qrcode": "monospaced/angular-qrcode#~6.0.3",
+    "ionic-filter-bar": "~1.0.4",
+    "angular-uuid4": "~0.3.0"
   }
 }

@@ -1,0 +1,28 @@
+<ion-view view-title="Search Unit" id="create-defect-units">
+    <ion-nav-buttons side="secondary">
+        <button class="button button-icon icon ion-ios-search-strong" ng-click="showFilterBar()">
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-list ng-if="showHint" class="fade-animation">
+            <ion-item ng-click="showFilterBar()">
+                Tap to start searching units.
+            </ion-item>
+        </ion-list>
+        <ion-list ng-if="!showHint" class="fade-animation">
+            <div collection-repeat="unit in filteredUnits" divider-collection-repeat>
+                <ion-item class="item-icon-right" href="#/app/create-defect-unit/{{unit.id}}">
+                    <table>
+                        <tr>
+                            <td>UnitNo&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{ unit.unitNo }}</td>
+                        </tr>
+                        <tr>
+                            <td class="padding-xxs-top">Type&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{ unit.type }}</td>
+                        </tr>
+                    </table>
+                    <i class="icon ion-chevron-right icon-accessory"></i>
+                </ion-item>
+            </div>
+        </ion-list> 
+    </ion-content>
+</ion-view>

@@ -9,233 +9,59 @@ angular.module('route', ['ionic'])
         templateUrl: 'templates/menu.html',
         controller: 'AppCtrl'
     })
-    .state('app.whatsnew', {
-        url: '/whatsnew',
+    .state('app.create-defect-projects', {
+        url: '/create-defect-projects',
         views: {
             'menuContent': {
-                templateUrl: 'templates/whatsnew.html',
-                controller: 'WhatsNewCtrl'
+                templateUrl: 'templates/create-defect-projects.html',
+                controller: 'CreateDefectProjectsCtrl'
             }
         }
     })
-    .state('app.purchasedproperties', {
-        url: '/purchasedproperties',
+    .state('app.create-defect-units', {
+        url: '/create-defect-project/{projectId}',
         views: {
             'menuContent': {
-                templateUrl: 'templates/purchasedproperties.html',
-                controller: 'PurchasedPropertiesCtrl'
-            }
-        }
-    })
-    .state('app.purchasedproperty', {
-        url: '/purchasedproperty/{id}',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/purchasedpropertydetail.html',
-                controller: 'PurchasedPropertyDetailCtrl'
-            }
-        }
-    })
-
-    .state('app.constructions', {
-        url: '/constructions',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/constructions.html',
-                controller: 'ConstructionsCtrl'
-            }
-        }
-    })
-
-    .state('app.constructiondetail', {
-        url: '/construction/{id}',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/constructiondetail.html',
-                controller: 'ConstructionDetailCtrl'
-            }
-        }
-    })
-
-    .state('app.properties', {
-        url: '/properties',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/properties.html',
-                controller: 'PropertiesCtrl'
-            }
-        }
-    })
-
-    .state('app.propertydetail', {
-        url: '/property/{id}',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/propertydetail.html',
-                controller: 'PropertyDetailCtrl'
-            }
-        }
-    })
-
-    .state('app.events', {
-        url: '/events',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/events.html',
-                controller: 'EventsCtrl'
-            }
-        }
-    })
-
-    .state('app.eventdetail', {
-        url: '/event/{id}',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/eventdetail.html',
-                controller: 'EventDetailCtrl'
+                templateUrl: 'templates/create-defect-units.html',
+                controller: 'CreateDefectUnitsCtrl'
             }
         }
     })
     
-    .state('app.tickets', {
-        url: '/tickets',
+    .state('app.create-defect-unit', {
+        url: '/create-defect-unit/{id}',
         views: {
             'menuContent': {
-                templateUrl: 'templates/tickets.html',
-                controller: 'TicketsCtrl'
-            }
-        }
-    })
-
-    .state('app.ticket', {
-        url: '/ticket/{id}',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/ticket.html',
-                controller: 'TicketCtrl'
+                templateUrl: 'templates/create-defect-unit.html',
+                controller: 'CreateDefectUnitCtrl'
             }
         }
     })
     
-
-    .state('app.vouchers', {
-        url: '/vouchers',
+    .state('app.create-defect-handover', {
+        url: '/create-defect-handover/{id}',
         views: {
             'menuContent': {
-                templateUrl: 'templates/vouchers.html',
-                controller: 'VouchersCtrl'
+                templateUrl: 'templates/create-defect-handover.html',
+                controller: 'CreateDefectHandoverCtrl'
             }
         }
     })
     
-    .state('app.voucher', {
-        url: '/voucher/{id}',
+    .state('app.create-defect-defectitems', {
+        url: '/create-defect-defectitems/{id}',
         views: {
             'menuContent': {
-                templateUrl: 'templates/voucherdetail.html',
-                controller: 'VoucherDetailCtrl'
+                templateUrl: 'templates/create-defect-defectitems.html',
+                controller: 'CreateDefectDefectItemsCtrl'
             }
         }
     })
-
-    .state('app.calculator', {
-        url: '/calculator',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/calculator.html',
-                controller: 'CalculatorCtrl'
-            }
-        }
-    })
-
-    .state('app.feedbacks', {
-        url: '/feedbacks',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/feedbacks.html'
-            }
-        }
-    })
-
-    .state('app.consultants', {
-        url: '/consultants',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/consultants.html',
-                controller: 'ConsultantsCtrl'
-            }
-        }
-    })
-
-    .state('app.consultants-where-project', {
-        url: '/consultants/where-project/{projectId}',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/consultants-where-project.html',
-                controller: 'ConsultantsWhereProjectCtrl'
-            }
-        }
-    })
-
-    .state('app.consultantdetail', {
-        url: '/consultant/{id}',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/consultantdetail.html',
-                controller: 'ConsultantDetailCtrl'
-            }
-        }
-    })
-
-
-    .state('app.privacypolicy', {
-        url: '/privacypolicy',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/privacypolicy.html'
-            }
-        }
-    })
-
-    .state('app.termsandcondition', {
-        url: '/termsandcondition',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/termsandcondition.html'
-            }
-        }
-    })
-
-    .state('app.pdpa', {
-        url: '/pdpa',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/pdpa.html'
-            }
-        }
-    })
-
-    .state('app.profile', {
-        url: '/profile',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/profile.html'
-            }
-        }
-    })
-
-    .state('app.aboutus', {
-        url: '/aboutus',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/aboutus.html'
-            }
-        }
-    })
+    
 
     ;
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/whatsnew');
+    $urlRouterProvider.otherwise('/app/create-defect-projects');
     
     
 }).run(function($rootScope, u, apiUser, $ionicModal){

@@ -42,6 +42,8 @@ $light-theme-bg-color:#fbfbfb;
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
+
+@import "www/lib/ionic-filter-bar/scss/ionic.filter.bar";
  
 @import "../lib/ionic-rating/ionic-rating.css";
 
@@ -110,6 +112,32 @@ $light-theme-bg-color:#fbfbfb;
 //
 
 //padding
+
+
+@mixin create-padding($word, $value) {
+    .padding-#{$word} {
+        padding:$value;   
+    }
+
+    .padding-#{$word}-top {
+        padding-top:$value;   
+    }
+
+    .padding-#{$word}-bottom {
+        padding-top:$value;   
+    }
+
+    .padding-#{$word}-horizontal {
+        padding-left: $value;
+        padding-right: $value;
+    }
+
+    .padding-#{$word}-vertical {
+        padding-top: $value;
+        padding-bottom: $value;
+    }
+}
+
 .padding-0 {
     padding: 0;
 }
@@ -121,34 +149,10 @@ $light-theme-bg-color:#fbfbfb;
     padding-top:44px;   
 }
 
-.padding-md {
-    padding: 20px;
-}
-
-.padding-md-horizontal {
-    padding-left: 20px;
-    padding-right: 20px;
-}
-
-.padding-md-vertical {
-    padding-top: 20px;
-    padding-bottom: 20px;
-}
-
-.padding-lg {
-    padding: 40px;
-}
-
-.padding-lg-horizontal {
-    padding-left: 40px;
-    padding-right: 40px;
-}
-
-.padding-lg-vertical {
-    padding-top: 40px;
-    padding-bottom: 40px;
-}
-
+@include create-padding('xxs', 5px);
+@include create-padding('xs', 10px);
+@include create-padding('md', 20px);
+@include create-padding('lg', 40px);
 
 .padding-right-1-item {
     padding-right:54px;
@@ -654,3 +658,14 @@ ion-side-menu {
     }
 }
 
+
+#defectslist {
+    .ion-content-body {
+        bottom:128px;   
+    }
+    .ion-content-footer {
+        width:100%;
+        position:absolute;
+        bottom:0;
+    }
+}

@@ -5,17 +5,20 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', [
-    'ionic.rating',
+//    'ionic.rating',
     'services-api', 
     'ngCordova', 
-    'adaptive.googlemaps', 
+//    'adaptive.googlemaps', 
     'ngAnimate', 
     'route', 
     'ionic', 
     'starter.controllers', 
     'services',
     'angular.filter',
-    'monospaced.qrcode'])
+    'uuid4',
+//    'monospaced.qrcode',
+    'jett.ionic.filter.bar'
+])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

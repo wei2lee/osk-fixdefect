@@ -1,0 +1,42 @@
+<ion-view view-title="Defects List" id="defectslist">
+    <ion-content scroll=false>
+        <ion-content class="ion-content-body">
+            <div class="list fade-animation" ng-if="project">
+                <div class="item">
+                    <table>
+                        <tr>
+                            <td>Project&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{project.displayName}}</td>
+                        </tr>
+                        <tr>
+                            <td class="padding-top">UnitNo&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{unit.unitNo}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <ion-list class="card">
+                <ion-item class="fade-animation" ng-repeat="defectItem in defectItems">
+                    <table>
+                    <tr>
+                        <td colspan=3>{{defectItem.defectType.displayName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-xxs-top">Status&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{project.displayName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-xxs-top">Defect Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate}}</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-xxs-top">Completion Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.completionDate}}</td>
+                    </tr>
+                    </table>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+        <div class="ion-content-footer">
+            <div class="padding">
+                <a class="button button-block button-positive" href="#/app/create-defect-defectitems/{{unit.id}}">Add New Defect Item</a>
+                <a class="button button-block button-positive" href="#/app/create-defect-defectitems/{{unit.id}}">Submit</a>
+            </div>
+        </div>>
+    </ion-content>
+</ion-view>

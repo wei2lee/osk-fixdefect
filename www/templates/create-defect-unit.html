@@ -1,0 +1,63 @@
+<ion-view view-title="Unit Details">
+    <ion-content>
+        <div class="card">
+            <div class="item item-divider">
+                Owner
+            </div>
+            <div class="item">
+                <p>
+                    <small>Full Name</small><br>
+                    <b>{{owner.fullName}}</b>
+                </p>
+            </div>
+            <div class="item">
+                <p>
+                    <small>NRIC</small><br>
+                    <b>{{owner.nric}}</b>
+                </p>
+            </div>
+            <div class="item">
+                <p>
+                    <small>H/P</small><br>
+                    <b>{{owner.contact}}</b>
+                </p>
+            </div>       
+        </div>
+        
+        <div class="card">
+            <div class="item item-divider">
+                Unit
+            </div>
+            <div class="item">
+                <p>
+                    <small>Unit No</small><br>
+                    <b>{{unit.unitNo}}</b>
+                </p>
+            </div>
+            <div class="item">
+                <p>
+                    <small>Unit Type</small><br>
+                    <b>{{unit.type}}</b>
+                </p>
+            </div>
+            <div class="item">
+                <p>
+                    <small>View</small><br>
+                    <b>{{unit.view}}</b>
+                </p>
+            </div>      
+            <div class="item">
+                <p>
+                    <small>Size</small><br>
+                    <b>{{unit.size}} s.q.</b>
+                </p>
+            </div>  
+        </div>
+        
+        <div class="padding">
+            <a class="button button-block button-positive" href="#/app/create-defect-handover/{{unit.id}}">Confirm</a>
+        </div>
+        
+        
+    </ion-content>
+</ion-view>

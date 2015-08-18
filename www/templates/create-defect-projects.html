@@ -1,0 +1,10 @@
+<ion-view view-title="Create Defect">
+    <ion-content>
+        <div class="list card fade-in-animation" ng-repeat="project in projects">
+            <a href="#/app/create-defect-project/{{project.id}}" class="item item-icon-left item-thumbnail-left">
+                <img ng-src="{{project.thumb}}">
+                <p>{{project.displayName}}</p>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

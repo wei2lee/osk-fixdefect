@@ -5,6 +5,133 @@ angular.module('starter.controllers', [])
 .controller('AppCtrl', function ($rootScope, $scope, $ionicModal, $timeout, u, apiUser) {
 })
 
+
+.controller('CreateDefectProjectsCtrl', function ($scope, u, $state, apiProject) {
+    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
+        if(state.direction != 'back') {
+            $scope.projects = [];
+            u.showProgress();
+            apiProject.getAll().then(function(results) {
+                $scope.projects = results;  
+            }).catch(function(error) {
+
+            }).finally(function() {
+                 u.hideProgress();
+            });
+        }
+    });
+})
+
+.controller('CreateDefectUnitsCtrl', function ($scope, u, $state, apiUnit, $ionicFilterBar) {
+    var _this = this;
+    $scope.units = [];
+    $scope.showHint = true;
+    $scope.showFilterBar = function () {
+        $scope.showHint = false;
+        var filterBarInstance = $ionicFilterBar.show({
+            items: $scope.units,
+            update: function (filteredItems) {
+                
+            },
+            filter: function(array, expression, comparator) {
+                if(!expression.unitNo || expression.unitNo.length == 0) {
+                    $scope.filteredUnits = [];
+                    return [];   
+                }
+                var unitNoLowerCase = expression.unitNo.toLowerCase();
+                var ret = _.filter(array, function(o){
+                    var ind = o.unitNo.toLowerCase().indexOf(unitNoLowerCase);
+                    return ind >= 0;
+                });
+                
+                $scope.filteredUnits = ret;
+                
+                return ret;
+            },
+            filterProperties:['unitNo']
+        });
+    };
+    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
+        console.log('CreateDefectUnits.beforeEnter');
+        if(state.direction != 'back') {
+            $scope.units = [];
+            $scope.showHint = true;
+            $scope.filteredUnits = [];
+            
+            u.showProgress();
+            apiUnit.getByProjectId($state.params.projectId).then(function(results) {
+                $scope.units = results;  
+            }).catch(function(error) {
+
+            }).finally(function() {
+                 u.hideProgress();
+            });
+        }
+    });
+})
+
+
+.controller('CreateDefectUnitCtrl', function ($scope, u, $state, apiUnit) {
+    var _this = this;
+    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
+        if(state.direction != 'back') {
+            $scope.unit = null;
+            $scope.owner = null;
+            u.showProgress();
+            apiUnit.getById($state.params.id).then(function(results) {
+                $scope.unit = results;  
+                $scope.owner = results.owner;
+            }).catch(function(error) {
+
+            }).finally(function() {
+                 u.hideProgress();
+            });
+        }
+    });
+})
+
+.controller('CreateDefectHandoverCtrl', function ($scope, u, $state, apiUnit) {
+    var _this = this;
+    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
+        if(state.direction != 'back') {
+            $scope.unit = null;
+            u.showProgress();
+            apiUnit.getById($state.params.id).then(function(results) {
+                $scope.unit = results;  
+            }).catch(function(error) {
+
+            }).finally(function() {
+                 u.hideProgress();
+            });
+        }
+    });
+})
+
+.controller('CreateDefectDefectItemsCtrl', function ($scope, u, $state, apiDefectItem, apiUnit, uuid4) {
+    var _this = this;
+    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
+        if(state.direction != 'back') {
+            $scope.detectItems = [];
+            $scope.unit = null;
+            $scope.session = {id: uuid4.generate()};
+            $scope.project = null;
+            
+            u.showProgress();
+            apiUnit.getById($state.params.id).then(function(results) {
+                $scope.unit = results;  
+                $scope.project = results.project;
+                $scope.defectItems = [{}, {}, {}]
+            }).catch(function(error) {
+
+            }).finally(function() {
+                 u.hideProgress();
+            });
+        }
+    });
+})
+
+
+
 .controller('WhatsNewCtrl', function ($scope, $interval, u, apiWhatsNewItem) {
     $scope.news = [];
     $scope.updateExpireRemainInterval = null;

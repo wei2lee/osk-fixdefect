@@ -1,0 +1,25 @@
+<ion-view view-title="Handover">
+    <ion-content>
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Date of Handover</span>
+                <input type="date" placeholder="" ng-model="handoverDate">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Time of Handover</span>
+                <input type="time" placeholder="" ng-model="handoverTime">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Water Meter Reading</span>
+                <input type="number" placeholder="" ng-model="waterMeterReading">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Electricity Meter Reading</span>
+                <input type="number" placeholder="" ng-model="eletricityMeterReading">
+            </label>
+        </div>
+        <div class="padding">
+            <a class="button button-block button-positive" href="#/app/create-defect-defectitems/{{unit.id}}">Next</a>
+        </div>
+    </ion-content>
+</ion-view>
