@@ -1,0 +1,656 @@
+/* ==========================================================================
+   Variables
+   ========================================================================== */
+
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+
+For example, you might change some of the default colors:
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #387ef5 !default;
+$calm:                            #11c1f3 !default;
+$balanced:                        #33cd5f !default;
+$energized:                       #ffc900 !default;
+$assertive:                       #ef473a !default;
+$royal:                           #886aea !default;
+$dark:                            #444 !default;
+*/
+
+$sidemenu-bottom-overlay-box-shadow:0 0 20px rgba(0, 0, 0, .3) !default;
+
+$bgcolor: rgba(232, 230, 230, 0.21) ;
+
+$royal:                           #C6095F !default;
+
+$fa-font-path: "../lib/fontawesome/fonts" !default;
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+$black-theme-bg-color:black;
+$light-theme-bg-color:#fbfbfb;
+
+/* ==========================================================================
+   Base Import
+   ========================================================================== */
+
+
+@import "www/lib/fontawesome/scss/font-awesome.scss";
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+ 
+@import "../lib/ionic-rating/ionic-rating.css";
+
+/* ==========================================================================
+   Utility
+   ========================================================================== */
+
+//text-color
+.text-light {
+    color:$light;   
+}
+.text-stable {
+    color:$stable;   
+}
+.text-positive {
+    color:$positive;   
+}
+.text-calm {
+    color:$calm;   
+}
+.text-balanced {
+    color:$balanced;   
+}
+.text-energized {
+    color:$energized;   
+}
+.text-assertive {
+    color:$assertive;   
+}
+.text-royal {
+    color:$royal;   
+}
+.text-dark {
+    color:$dark;   
+}
+
+//bg-color
+.bg-light {
+    background-color:$light;   
+}
+.bg-stable {
+    background-color:$stable;   
+}
+.bg-positive {
+    background-color:$positive;   
+}
+.bg-calm {
+    background-color:$calm;   
+}
+.bg-balanced {
+    background-color:$balanced;   
+}
+.bg-energized {
+    background-color:$energized;   
+}
+.bg-assertive {
+    background-color:$assertive;   
+}
+.bg-royal {
+    background-color:$royal;   
+}
+.bg-dark {
+    background-color:$dark;   
+}
+
+//
+
+//padding
+.padding-0 {
+    padding: 0;
+}
+.padding-bottom-0 {
+    padding-bottom:0;   
+}
+
+.padding-top-headerbar {
+    padding-top:44px;   
+}
+
+.padding-md {
+    padding: 20px;
+}
+
+.padding-md-horizontal {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.padding-md-vertical {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.padding-lg {
+    padding: 40px;
+}
+
+.padding-lg-horizontal {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.padding-lg-vertical {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+
+.padding-right-1-item {
+    padding-right:54px;
+}
+
+.padding-right-2-item {
+    padding-right:54px*2;
+}
+
+.item-icon-right .icon.icon-right-2 {
+    right:54px + 11px;   
+}
+//margin
+.margin-bottom-0 {
+    margin-bottom:0;   
+}
+
+.margin-0 {
+    margin-left:0;   
+    margin-right:0;   
+    margin-top:0;   
+    margin-bottom:0;   
+}
+
+.m-b-xs {
+    margin:2px;
+}
+
+.margin-0 {
+    margin:0;   
+}
+
+//alignment
+.text-center {
+    text-align: center;
+}
+
+.center-block {
+    margin:0 auto;   
+}
+
+.absolute-position-bottom {
+    position:absolute;
+    bottom:0;
+}
+
+//other
+.full-width {
+    width:100%;   
+}
+
+.full-height {
+    height:100%;   
+}
+
+.img-responsive {
+    max-width: 100%;
+    height: auto;
+}
+
+.full-img-responsive {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+.font-bold {
+    font-weight:900;   
+}
+
+.left-border {
+    border-left: solid 1px rgb(221, 221, 221);
+}
+
+.bottom-border {
+    border-bottom: solid 1px rgb(221, 221, 221);
+}
+
+.line-card-image {
+    line-height:0; 
+    padding-top:0;
+    padding-bottom:0;
+}
+
+.item-right {
+    position:absolute;
+    right:11px;
+    padding-left:10px;
+}
+
+.view-center-thumb {
+    width: 45%;
+    min-width: 160px;
+    display: block;
+    margin: 0 auto;
+}
+
+.vertical-center-container {
+    position: relative;
+}
+
+.vertical-center-content {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.nowrap {
+    display: inline-block;
+}
+
+.responsive-container {
+    position: relative;
+    >canvas:first-child {
+        position: relative;
+        width: 100%;
+        height: auto;
+        z-index: 1;
+    }
+    >.responsive-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 2;
+    }
+}
+
+.circle {
+    border-radius: 50%;
+    /* width and height can be anything, as long as they're equal */
+}
+
+
+.fade-in-animation {
+    position:relative;
+    &.ng-enter {
+        transition: 0.3s ease-out all;
+        opacity: 0;
+        //right:-50%;
+        //bottom:-50%;
+    }
+    &.ng-enter-stagger {
+        transition-delay: 0.15s;
+        transition-duration: 0s;
+    }
+    &.ng-enter.ng-enter-active {
+        opacity: 1;
+        //right:0;
+        //bottom:0;
+    }
+}
+
+.fade-animation {
+    position:relative;
+    &.ng-enter {
+        transition: 0.3s ease-out all;
+        opacity: 0;
+        //right:-50%;
+        //bottom:-50%;
+    }
+    &.ng-enter-stagger {
+        transition-delay: 0.15s;
+        transition-duration: 0s;
+    }
+    &.ng-enter.ng-enter-active {
+        opacity: 1;
+        //right:0;
+        //bottom:0;
+    }
+    &.ng-leave {
+        transition: 0.3s ease-out all;
+        opacity: 1;
+//        right:0;
+//        bottom:0;
+    }
+    &.ng-leave.ng-leave-active {
+        opacity: 0;
+//        right:50%;
+//        bottom:50%;
+    }
+}
+.pointer-events-none {
+    pointer-events: none;   
+}
+
+
+.divide-by-4 {
+    height:100%;
+    .row {
+        height:50%;
+        .col {
+            text-align: center;
+            text-decoration: none;   
+        }
+    }
+}
+/* ==========================================================================
+   End Utility
+   ========================================================================== */
+
+/* ==========================================================================
+   Loading //http://david.ingledow.co.uk/blog/google-material-designs-animated-loading-spinner-svg-and-css/
+   ========================================================================== */
+
+$green: #008744;
+$blue: #0057e7;
+$red: #d62d20;
+$yellow: #ffa700;
+$white: #eee;
+
+$width: 100px;
+$zoom: 1.7;
+
+.loader {
+  position: relative;
+  margin: 0px auto;
+  width: $width;
+  height: $width;
+  zoom: $zoom;
+}
+
+.circular {
+ -webkit-animation: rotate 2s linear infinite;
+ animation: rotate 2s linear infinite;
+ height: $width;
+ position: relative;
+ width: $width;
+}
+
+
+.path {
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+  -webkit-animation: 
+   dash 1.5s ease-in-out infinite,
+   color 6s ease-in-out infinite
+  ;
+  animation: 
+   dash 1.5s ease-in-out infinite,
+   color 6s ease-in-out infinite
+  ;
+  stroke-linecap: round;
+}
+
+@-webkit-keyframes rotate{
+ 100%{
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+ }
+}
+
+@keyframes rotate{
+ 100%{
+  -webkit-transform: rotate(360deg);
+  transform: rotate(360deg);
+ }
+}
+@-webkit-keyframes dash{
+ 0%{
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+ }
+ 50%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -35;
+ }
+ 100%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -124;
+ }
+}
+@keyframes dash{
+ 0%{
+  stroke-dasharray: 1,200;
+  stroke-dashoffset: 0;
+ }
+ 50%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -35;
+ }
+ 100%{
+  stroke-dasharray: 89,200;
+  stroke-dashoffset: -124;
+ }
+}
+@-webkit-keyframes color{
+  100%, 0%{
+    stroke: $red;
+  }
+  40%{
+    stroke: $blue;
+  }
+  66%{
+    stroke: $green;
+  }
+  80%, 90%{
+    stroke: $yellow;
+  }
+}
+@keyframes color{
+  100%, 0%{
+    stroke: $red;
+  }
+  40%{
+    stroke: $blue;
+  }
+  66%{
+    stroke: $green;
+  }
+  80%, 90%{
+    stroke: $yellow;
+  }
+}
+/* ==========================================================================
+   End Loading
+   ========================================================================== */
+
+/* ==========================================================================
+   Customize Ionic Component / Extra Stylilng
+   ========================================================================== */
+
+/* ==========================================================================
+   rating
+   ========================================================================== */
+    ul.rating li {
+        color:$energized;   
+        i {
+            font-size:50px;
+        }
+    }
+
+
+/* ==========================================================================
+   ion-content
+   ========================================================================== */
+
+ion-content {
+    //background-color:$bgcolor;  
+    //background-color:$black-theme-bg-color;
+    background-color:$light-theme-bg-color;
+    
+    &.block-child-only {
+        background-color:transparent;
+        pointer-events: none;
+        
+        > * {
+           pointer-events: visible; 
+        }
+    }
+}
+
+//ion-content which under a tabs component
+.tabs-top+ion-content {
+    padding-top:50px;
+}
+
+
+
+/* ==========================================================================
+   SideMenu
+   ========================================================================== */
+ion-side-menu {
+    .ion-content-first-child {
+        bottom:60px;   
+    }
+    .item {
+        //border:none;   
+    }
+    ion-content.ion-content-first-child {
+        //background-color:$black-theme-bg-color;
+        background-color:$light-theme-bg-color;
+        ion-list {
+            ion-item {
+                background-color:$light !important;
+                .item-content {
+                    .icon {
+                        left:15px;
+                        img {
+                            width:26px;
+                            height:26px;
+                        }
+                    }
+                }
+                .item-content {
+                    background-color:$light !important;
+                }
+            }
+        }        
+    }
+}
+
+.sidemenu-bottom-overlay-box-shadow {
+    &.button.button-full {
+        margin-bottom:0;
+        margin-top:0;
+    }
+    box-shadow:none;
+    //box-shadow: $sidemenu-bottom-overlay-box-shadow;
+}
+
+
+
+/* ==========================================================================
+   List
+   ========================================================================== */
+
+.list {
+    &.card {
+        margin:10px 10px;   
+        padding-bottom:0; 
+    }
+    
+    .item {
+        .font-size-lg {
+            font-size: 16px;
+        }
+        .icon-left-border {
+            border-left: solid 1px rgb(221, 221, 221);
+            padding-left: 10px;
+        }
+    }
+
+}
+
+.button.button-full.footer-button {
+    margin-bottom:0;
+    margin-top:0;
+}
+
+
+/* ==========================================================================
+   End Customize Ionic Component / Extra Stylilng
+   ========================================================================== */
+
+/* ==========================================================================
+   Page Layout
+   ========================================================================== */
+#feedbacks {
+    .properties-background {
+        background:transparent url(../img/properties_images/Capital_KL3092-hattern-building_c02-eyelevel-night-view3.jpg) center;
+    }
+    .consultants-background {
+        background:transparent url(../img/properties_images/HarbourCity_A3009-Aerial-View-Day_New.jpg) center;
+    }
+    .events-background {
+        background:transparent url(../img/properties_images/HH_01.jpg) center;
+    }
+    .more-background {
+        background:transparent url(../img/properties_images/Imperio_KL2124-C29-Pool-View.jpg) center;
+    }
+    .properties-background, .consultants-background, .events-background, .more-background {
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
+    .divide-by-4 {
+        .row {
+            .col {
+                position:relative;
+            }
+        }
+    }
+    .text-container {
+        position: absolute;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 1);
+        
+        bottom:0px;
+        right:15px;
+        @media screen and (min-width:$grid-responsive-sm-break) {
+            font-size:36px;
+            bottom:5px;
+            right:25px;
+        }
+        
+        h1 {
+            font-size:24px;
+            @media screen and (min-width:$grid-responsive-sm-break) {
+                font-size:36px;
+            }
+        }
+    }
+    .col {
+        margin-bottom:1px;
+        @media screen and (min-width:$grid-responsive-sm-break) {
+            margin-bottom:1px;   
+        }
+    }
+
+}
+
+
+#ticket {
+    .qrcode-container {
+        margin-top:40px;
+        img {
+            width:200px;
+            height:200px;
+        }
+    }
+}
+

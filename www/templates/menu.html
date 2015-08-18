@@ -1,0 +1,36 @@
+<ion-side-menus enable-menu-with-back-views="false">
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-stable">
+            <ion-nav-back-button>
+            </ion-nav-back-button>
+
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+        <ion-nav-view name="menuContent"></ion-nav-view>
+    </ion-side-menu-content>
+
+    <ion-side-menu side="left">
+        <ion-header-bar class="bar-stable">
+            <h1 class="title">OSK Property</h1>
+        </ion-header-bar>
+        <ion-content class="ion-content-first-child">
+            <ion-list>
+                <ion-item menu-close href="#/app/whatsnew" >
+                    Create Defect
+                </ion-item>
+                <ion-item menu-close href="#/app/purchasedproperties" >
+                    Records
+                </ion-item>
+            </ion-list>
+        </ion-content>
+        <ion-content scroll="false" class="block-child-only">
+            <div class="absolute-position-bottom full-width">
+                <button ng-if="apiUser.getUser()" class="sidemenu-bottom-overlay-box-shadow button button-balanced button-full margin-0 " ng-click="u.doLogout();">Logout</button>
+                <button ng-if="!apiUser.getUser()" class="sidemenu-bottom-overlay-box-shadow button button-balanced button-full margin-0 " ng-click="u.openLogin()">Login</button>
+            </div>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>
