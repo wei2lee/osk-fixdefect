@@ -1,4 +1,24 @@
-angular.module('services', ['ngResource'])
+function createAppModel(_name) {
+
+    angular.module('services').factory(_name, function() {
+        var o = {};
+        o.values = [];
+        o.getAll = function() {
+            return values;
+        }
+        o.empty = function() { o.values = []; }
+        o.add = function(value) { o.values.push(value); }
+        o.update = function(value) { 
+
+        }
+
+        return o;
+    });
+
+}
+
+
+angular.module('services', [])
 
 .config(function ($cordovaAppRateProvider) {
 
@@ -15,6 +35,8 @@ angular.module('services', ['ngResource'])
 
     }, false);
 })
+
+.value('defectForm', {defectItems:[]})
 
 .service('u', function ($ionicModal, apiUser, $rootScope, $ionicModal, apiUser, $q, $ionicPopup, $ionicLoading, $cordovaSocialSharing, $cordovaAppRate, $cordovaProgress) {
     var _this = this;
@@ -134,23 +156,9 @@ angular.module('services', ['ngResource'])
             // success
         });
     }
+})
     
-    this.waitDeviceReadyAndViewDidLoaded = function($scope) {
-        var defer = $q(function(resolve, reject) {
-            var i = 0;
-            ionic.Platform.ready(function(){
-                console.log('ready');
-                if(++i==2) {
-                    resolve();   
-                }
-            });
-            $scope.$on('$ionicView.loaded', function (viewInfo, state) {
-                console.log('$ionicView.loaded');
-                if(++i==2) {
-                    resolve();   
-                }
-            });        
-        });
-        return defer;
-    }
-});
+//createAppModel('formDefectItem');
+    
+    
+;

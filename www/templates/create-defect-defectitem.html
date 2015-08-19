@@ -1,0 +1,68 @@
+<ion-view view-title="Defect Item" id="create-defect-unit">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ng-click="done()">
+            Done
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="list">
+            <label class="item">
+                <img class="img-responsive" ng-src="{{defectItem.thumb}}">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Defect Start Date</span>
+                <input type="date" placeholder="">
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Severity</div>
+                <select name="defectItemSeverity" ng-model="defectItem.defectItemSeverity"
+                        ng-options="option.displayName for option in defectItemSeverityOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Defect Type</div>
+                <select name="defectType" ng-model="defectItem.defectType"
+                        ng-options="option.displayName for option in defectTypeOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Defect Area</div>
+                <select name="defectType" ng-model="defectItem.defectItemAreaLocation"
+                        ng-options="option.displayName for option in defectItemAreaLocationOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <label class="item item-input item-stacked-label item-input-image">
+                <div class="input-label">Defect's Location</div>
+                <div class="image margin-xs-vertical" ng-style="{'background-image':'url(img/defect/ceiling-crack-repair.jpg)'}">
+                </div>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Reason Type</div>
+                <select name="defectItemReason" ng-model="defectItem.defectItemReason"
+                        ng-options="option.displayName for option in defectItemReasonOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <label class="item item-input">
+                <div class="input-label">Defect Due Date</div>
+                <input type="date" placeholder="" ng-model="defectItem.defectStartDate">
+            </label>
+            <label class="item item-input item-stacked-label item-input-textarea">
+                <div class="input-label">Defect Description</div>
+                <textarea autogrow row=3 class="margin-xs-vertical">
+                
+                </textarea>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Status</div>
+                <select name="defectItemStatus" ng-model="defectItem.defectItemStatus"
+                        ng-options="option.displayName for option in defectItemStatusOptions track by option.id"
+                        >
+                </select>
+            </label>
+        </div>
+    </ion-content>
+</ion-view>

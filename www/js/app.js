@@ -16,6 +16,7 @@ angular.module('starter', [
     'services',
     'angular.filter',
     'uuid4',
+    'directive',
 //    'monospaced.qrcode',
     'jett.ionic.filter.bar'
 ])

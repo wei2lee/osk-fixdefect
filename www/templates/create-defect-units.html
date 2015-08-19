@@ -4,12 +4,10 @@
         </button>
     </ion-nav-buttons>
     <ion-content>
-        <ion-list ng-if="showHint" class="fade-animation">
-            <ion-item ng-click="showFilterBar()">
-                Tap to start searching units.
+        <ion-list >
+            <ion-item ng-if="showHint" class="fade-in-animation" ng-click="showFilterBar()">
+                <a class="button button-clear button-positive" href="">Tap and enter unitNo to search units.</a>
             </ion-item>
-        </ion-list>
-        <ion-list ng-if="!showHint" class="fade-animation">
             <div collection-repeat="unit in filteredUnits" divider-collection-repeat>
                 <ion-item class="item-icon-right" href="#/app/create-defect-unit/{{unit.id}}">
                     <table>
@@ -23,6 +21,6 @@
                     <i class="icon ion-chevron-right icon-accessory"></i>
                 </ion-item>
             </div>
-        </ion-list> 
+        </ion-list>
     </ion-content>
 </ion-view>

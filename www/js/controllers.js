@@ -1,8 +1,8 @@
 
 
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ["services"])
 
-.controller('AppCtrl', function ($rootScope, $scope, $ionicModal, $timeout, u, apiUser) {
+.controller('AppCtrl', function () {
 })
 
 
@@ -34,6 +34,7 @@ angular.module('starter.controllers', [])
                 
             },
             filter: function(array, expression, comparator) {
+                console.log(expression);
                 if(!expression.unitNo || expression.unitNo.length == 0) {
                     $scope.filteredUnits = [];
                     return [];   
@@ -107,388 +108,110 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('CreateDefectDefectItemsCtrl', function ($scope, u, $state, apiDefectItem, apiUnit, uuid4) {
+.controller('CreateDefectDefectItemsCtrl', function ($scope, u, $state, apiDefectItem, apiUnit, defectForm, $ionicHistory) {
     var _this = this;
+    
+    $scope.submit = function() {
+        u.showProgress();
+        apiDefectItem.add(defectForm.defectItems).then(function(results) {
+            u.showAlert('Defect Items is successfully submited!<br/>Tap close to return to home page.').then(function() {
+                console.log('showAlert End');
+                $ionicHistory.goBack(-1000);
+            });
+            defectForm.defectItems = [];
+            $scope.defectItems = [];
+        }).catch(function(error) {
+
+        }).finally(function() {
+             u.hideProgress();
+        });
+    }
+    
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
-            $scope.detectItems = [];
+            defectForm.unit = null;
+            defectForm.project = null;
+            defectForm.defectItems = [];
+            
+            
+            $scope.defectItems = [];
             $scope.unit = null;
-            $scope.session = {id: uuid4.generate()};
             $scope.project = null;
             
             u.showProgress();
             apiUnit.getById($state.params.id).then(function(results) {
                 $scope.unit = results;  
                 $scope.project = results.project;
-                $scope.defectItems = [{}, {}, {}]
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-
-
-.controller('WhatsNewCtrl', function ($scope, $interval, u, apiWhatsNewItem) {
-    $scope.news = [];
-    $scope.updateExpireRemainInterval = null;
-    
-    $scope.startUpdateExpireRemain = function() {
-        if($scope.updateExpireRemainInterval) return;
-        
-        $scope.updateExpireRemainInterval = $interval(function() {
-            $scope.updateExpireRemain();
-        },500);
-    }
-    
-    $scope.stopUpdateExpireRemain = function() {
-        if(!$scope.updateExpireRemainInterval) return;
-        
-        $interval.cancel($scope.updateExpireRemainInterval);
-    }
-    
-    $scope.updateExpireRemain = function() {
-        for(i = 0 ; i < $scope.news.length ; i++) {
-            var _new = $scope.news[i];
-            var expireRemainTimeInterval = Math.max(Math.floor((_new.expireDate.getTime() - new Date().getTime()) / 1000), 0);
-            var dd = Math.floor(expireRemainTimeInterval / (60*60*24));
-            var hh = Math.floor(expireRemainTimeInterval / (60*60)) % 24;
-            var mi = Math.floor(expireRemainTimeInterval / (60)) % 60;
-            var ss = expireRemainTimeInterval % 60;
-            //_new.expireRemain = dd + ' Days ' + hh + ' Hours ' + mi + ' Minute ' + ss + ' Seconds';
-            _new.expireRemain = sprintf("%d:%02d:%02d:%02d", dd, hh, mi, ss);
-        }
-    }
-    
-    $scope.$on('$ionicView.beforeEnter ', function (viewInfo, state) {
-        $scope.startUpdateExpireRemain(); 
-    });
-    $scope.$on('$ionicView.afterEnter', function (viewInfo, state) {
-        $scope.startUpdateExpireRemain(); 
-        if(state.direction != 'back') {
-            ionic.Platform.ready(function(){
-                u.showProgress();
-                apiWhatsNewItem.getAll().then(function(results) {
-                    $scope.news = results;  
-                    $scope.startUpdateExpireRemain(); 
-                }).catch(function(error) {
-
-                }).finally(function() {
-                     u.hideProgress();
-                });
-            });
-        }
-    });
-    $scope.$on('$ionicView.beforeLeave', function (viewInfo, state) {
-    });
-    $scope.$on('$ionicView.afterLeave', function (viewInfo, state) {
-        $scope.stopUpdateExpireRemain();
-    });
-})
-
-.controller('PurchasedPropertiesCtrl', function ($scope, u, apiPurchasedProperty) {
-    $scope.purchasedProperties = [];
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiPurchasedProperty.getAll().then(function(results) {
-                $scope.purchasedProperties = results;  
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-.controller('PurchasedPropertyDetailCtrl', function ($scope, u, $state, apiPurchasedProperty) {
-    $scope.purchasedProperty = undefined;
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiPurchasedProperty.getById($state.params.id).then(function(results) {
-                $scope.purchasedProperty = results;  
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-.controller('TicketsCtrl', function ($scope, u, $state, apiTicket) {
-    $scope.tickets = [];
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiTicket.getAll().then(function(results) {
-                $scope.tickets = results;  
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-.controller('TicketCtrl', function ($scope, u, $state, apiTicket) {
-    $scope.ticket = undefined;
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiTicket.getById($state.params.id).then(function(results) {
-                $scope.ticket = results;  
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-.controller('VouchersCtrl', function ($scope, u, $state, apiVoucher, $ionicModal, apiUser) {
-    $ionicModal.fromTemplateUrl('templates/modal/givepointqr.html', {
-        scope: $scope
-    }).then(function (modal) {
-        $scope.givePointModal = modal;
-    });
-    $scope.openGivePoint = function() {
-        if(apiUser.getUser()) {
-            $scope.givePointModal.show();   
-        }else{
-            u.openLogin().then(function() {
-                if(apiUser.getUser()) {
-                    $scope.givePointModal.show();   
-                }
-            });
-        }
-    }
-    
-    $scope.vouchers = [];
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiVoucher.getAll().then(function(results) {
-                $scope.vouchers = results;  
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-.controller('VoucherDetailCtrl', function ($rootScope, $scope, u, $state, apiVoucher, $ionicModal, apiUser) {
-    $ionicModal.fromTemplateUrl('templates/modal/givepointqr.html', {
-        scope: $scope
-    }).then(function (modal) {
-        $scope.givePointModal = modal;
-    });
-    $scope.openGivePoint = function() {
-        if(apiUser.getUser()) {
-            $scope.givePointModal.show();   
-        }else{
-            u.openLogin().then(function() {
-                if(apiUser.getUser()) {
-                    $scope.givePointModal.show();   
-                }
-            });
-        }
-    }
-    ////
-    $ionicModal.fromTemplateUrl('templates/modal/redeemqr.html', {
-        scope: $scope
-    }).then(function (modal) {
-        $scope.modal = modal;
-        console.log($scope.modal);
-    });
-    $scope.openRedeem = function() {
-        if(apiUser.getUser()) {
-            $scope.modal.show();   
-        }else{
-            u.openLogin().then(function() {
-                if(apiUser.getUser()) {
-                    $scope.modal.show();   
-                }
-            });
-        }
-    }
-    $scope.voucher = undefined;
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiVoucher.getById($state.params.id).then(function(results) {
-                $scope.voucher = results;  
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-.controller('ConstructionsCtrl', function ($scope, u, $state, apiConstruction) {
-    $scope.constructions = [];
-    $scope.tabIndex = 0;
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiConstruction.getAll().then(function(results) {
-                $scope.constructions = results;  
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-.controller('ConstructionDetailCtrl', function ($scope, u, $state, apiConstructionProgress) {
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiConstructionProgress.getByConstrucitonId($state.params.id).then(function(results) {
-                $scope.project = results.project;
-                $scope.construction = results.construction;
-                $scope.progresses = results.progresses;
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-
-.controller('PropertiesCtrl', function ($scope, u, $state, apiProperty) {
-    $scope.properties = [];
-    $scope.tabIndex = 0;
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiProperty.getAll().then(function(results) {
-                $scope.properties = results;
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-.controller('PropertyDetailCtrl', function ($scope, u, $state, apiProperty, $timeout) {
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiProperty.getById($state.params.id).then(function(results) {
-                $scope.property = results;  
-                $scope.project = results.project;
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-
-})
-
-.controller('EventsCtrl', function ($scope, $interval, u, apiEvent) {
-    $scope.events = [];
-    $scope.tabIndex = 0;
-    $scope.updateExpireRemainInterval = null;
-    
-    $scope.startUpdateExpireRemain = function() {
-        if($scope.updateExpireRemainInterval) return;
-        
-        $scope.updateExpireRemainInterval = $interval(function() {
-            $scope.updateExpireRemain();
-        },500);
-    }
-    
-    $scope.stopUpdateExpireRemain = function() {
-        if(!$scope.updateExpireRemainInterval) return;
-        $interval.cancel($scope.updateExpireRemainInterval);
-    }
-    
-    $scope.updateExpireRemain = function() {
-        for(i = 0 ; i < $scope.events.length ; i++) {
-            var _event = $scope.events[i];
-            var expireRemainTimeInterval = Math.max(Math.floor((_event.expireDate.getTime() - new Date().getTime()) / 1000), 0);
-            var dd = Math.floor(expireRemainTimeInterval / (60*60*24));
-            var hh = Math.floor(expireRemainTimeInterval / (60*60)) % 24;
-            var mi = Math.floor(expireRemainTimeInterval / (60)) % 60;
-            var ss = expireRemainTimeInterval % 60;
-            //_new.expireRemain = dd + ' Days ' + hh + ' Hours ' + mi + ' Minute ' + ss + ' Seconds';
-            _event.expireRemain = sprintf("%d:%02d:%02d:%02d", dd, hh, mi, ss);
-        }
-    }
-    
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        $scope.startUpdateExpireRemain(); 
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiEvent.getAll().then(function(results) {
-                $scope.events = results;
-            }).catch(function(error) {
-
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-    $scope.$on('$ionicView.afterEnter', function (viewInfo, state) {
-        $scope.startUpdateExpireRemain(); 
-    });
-    $scope.$on('$ionicView.beforeLeave', function (viewInfo, state) {
-    });
-    $scope.$on('$ionicView.afterLeave', function (viewInfo, state) {
-        $scope.stopUpdateExpireRemain();
-    });
-})
-
-.controller('EventDetailCtrl', function ($scope, u, $state, apiEvent, apiTicket) {
-    $scope.attempEvent = function(event) {
-        u.showProgress();
-        apiTicket.addByEvent(event).then(function(results) {
-            u.showAlert('Ticket for this event is added.');
-        }).catch(function(error) {
-        }).finally(function() {
-             u.hideProgress();
-        });
-    }
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiEvent.getById($state.params.id).then(function(results) {
-                $scope.event = results;
-            }).catch(function(error) {
+                $scope.defectItems = []
                 
+                defectForm.unit = results;
+                defectForm.project = results.project;
+                defectForm.defectItems = [];
+            }).catch(function(error) {
+
             }).finally(function() {
                  u.hideProgress();
             });
+        }else{
+            $scope.defectItems = defectForm.defectItems;
         }
     });
 })
 
-.controller('ConsultantsCtrl', function ($scope, u, $state, apiProject, apiConsultant) {
+.controller('CreateDefectDefectItemCtrl', function ($scope, $q, u, $state, apiUnit, defectForm, $ionicHistory,
+                                                     apiDefectItemAreaLocation, 
+                                                     apiDefectItemReason,
+                                                     apiDefectItemStatus,
+                                                     apiDefectItemSeverity,
+                                                     apiDefectType
+                                                    ) {
+    var _this = this;
+    $scope.done = function() {
+        if(!_this.isEdit) {
+            defectForm.defectItems.push($scope.defectItem);
+        }
+        $ionicHistory.goBack();
+    }
+    
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
+            
+            _this.isEdit = $state.current.name.indexOf('edit') >= 0;
+            
+            $scope.defectItem = _this.isEdit ? defectForm.defectItems[$state.params.index] : null;
+            
             u.showProgress();
-            apiProject.getAll().then(function(results) {
-                $scope.projects = results;
+            $q.all ([
+                apiDefectItemAreaLocation.getAll(),
+                apiDefectItemReason.getAll(),
+                apiDefectItemStatus.getAll(),
+                apiDefectItemSeverity.getAll(),
+                apiDefectType.getAll(),
+                apiDefectItemAreaLocation.getAll()
+            ]).then(function(results) {
+
+                
+                $scope.defectItemAreaLocationOptions = results[0];
+                $scope.defectItemReasonOptions = results[1];
+                $scope.defectItemStatusOptions = results[2];
+                $scope.defectItemSeverityOptions = results[3];
+                $scope.defectTypeOptions = results[4];
+                $scope.defectItemAreaLocationOptions = results[5];
+                
+                
+                if(!_this.isEdit) {
+                
+                    $scope.defectItem = {};
+                    $scope.defectItem.project = defectForm.project;
+                    $scope.defectItem.unit = defectForm.unit;
+                    $scope.defectItem.defectLocation = 'img/defect/ceiling-crack-repair.jpg';
+                    $scope.defectItem.defectItemSeverity = _.first($scope.defectItemSeverityOptions);
+                    $scope.defectItem.defectType = _.first($scope.defectTypeOptions);
+                    $scope.defectItem.defectItemReason = _.first($scope.defectItemReasonOptions);
+                    $scope.defectItem.defectItemStatus = $scope.defectItemStatusOptions[1];
+                    $scope.defectItem.defectItemAreaLocation = $scope.defectItemAreaLocationOptions[0];
+                    
+                }
             }).catch(function(error) {
 
             }).finally(function() {
@@ -498,14 +221,24 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('ConsultantsWhereProjectCtrl', function ($scope, $q, u, $state, apiConsultant, apiProject) {
+
+.controller('RecordProjectsCtrl', function ($scope, u, $state, apiDefectItem) {
+    var _this = this;
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
+            $scope.projects = [];
             u.showProgress();
-            $q.all([apiConsultant.getByProjectId($state.params.projectId), 
-                    apiProject.getById($state.params.projectId)]).then(function(results) {
-                $scope.consultants = results[0];
-                $scope.project = results[1];
+            apiDefectItem.getAll().then(function(results) {
+                var defectItems = results;  
+                var defectItemsByProjectIds = _.groupBy (defectItems, function(o) { return o.project.id; });
+                for(projectId in defectItemsByProjectIds) {
+                    var project = defectItemsByProjectIds[projectId][0].project;
+                    var defectItemsByUnitIds = _.groupBy (defectItemsByProjectIds[projectId], function(o) { return o.unit.id; });
+                    var p = jQuery.extend(true, {}, project);
+                    p.noOfUnits = _.size(defectItemsByUnitIds);
+                    console.log(p);
+                    $scope.projects.push(p);
+                }
             }).catch(function(error) {
 
             }).finally(function() {
@@ -515,53 +248,6 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('ConsultantDetailCtrl', function ($scope, u, $state, apiConsultant) {
-    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
-        if(state.direction != 'back') {
-            u.showProgress();
-            apiConsultant.getById($state.params.id).then(function(results) {
-                console.log(results);
-                $scope.consultant = results;
-            }).catch(function(error) {
 
-            }).finally(function() {
-                 u.hideProgress();
-            });
-        }
-    });
-})
-
-.controller('CalculatorCtrl', function ($scope) {
-    $scope.$on('$ionicView.loaded', function (viewInfo, state) {
-
-        $scope.purchaseprice = '';
-        $scope.downpayment = '';
-        $scope.loanrate = '';
-        $scope.tenureyear = '';
-
-        $scope.loanamount = function () {
-            return this.purchaseprice - this.downpayment;
-        };
-
-        $scope.payablepermonth = function () {
-            var ret = (this.interestpermonth() * this.effectiveinterest() * this.loanamount()) / (this.effectiveinterest() - 1);
-            if (isNaN(ret)) ret = 0;
-            return ret;
-        };
-
-        $scope.totalpayment = function () {
-            return this.payablepermonth() * this.tenureyear * 12;
-        };
-
-        $scope.interestpermonth = function () {
-            return this.loanrate / 100 / 12;
-        };
-
-        $scope.effectiveinterest = function () {
-            return Math.pow(1 + this.interestpermonth(), this.tenureyear * 12);
-        };
-
-    });
-})
 
 ;

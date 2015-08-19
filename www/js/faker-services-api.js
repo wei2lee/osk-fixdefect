@@ -6,12 +6,21 @@ function apiBaseService(_values, $q, $timeout) {
     var _this = this;
     this.values = _values;
     var values = this.values;
+    var index = 1000;
     
     this.add = function(o) {
         return $q(function(resolve, reject) {
             if(Math.random() >= 0)
                 fakeNetworkDelay($timeout, function() { 
-                    values.push(o);
+                    if(Array.isArray(o)) {
+                        for(i = 0 ; i < o.length ; i++) {
+                            o[i].id = index++;
+                            values.push(o[i]);
+                        }
+                    }else{
+                        o.id = index++;
+                        values.push(o);
+                    }
                     resolve(null); 
                 });
             else
@@ -355,7 +364,7 @@ angular.module('services-api', [])
     return;
 })
 
-.service('apiDefectItemAreaLocation', function() {
+.service('apiDefectItemAreaLocation', function($q,$timeout) {
     var values = [];
     this.values = values;
     
@@ -562,6 +571,10 @@ angular.module('services-api', [])
 
 .service('apiDefectItem', function($q,$timeout) {
     var values = [];
+    
+    
+    
+    
     return new apiBaseService(values,$q,$timeout);
 })
 

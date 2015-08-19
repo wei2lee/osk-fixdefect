@@ -13,29 +13,35 @@
                     </table>
                 </div>
             </div>
+            <div class="list" ng-if="!(defectItems.length)">
+                <div class="item" >
+                    <a class="button button-clear button-positive" href="#/app/create-defect-defectitem/add">There's no defect item yet. Add a defect item</a>
+                </div>
+            </div>
             <ion-list class="card">
-                <ion-item class="fade-animation" ng-repeat="defectItem in defectItems">
+                <ion-item class="item-icon-right fade-animation" ng-repeat="defectItem in defectItems" href="#/app/create-defect-defectitem/edit/{{$index}}">
                     <table>
                     <tr>
                         <td colspan=3>{{defectItem.defectType.displayName}}</td>
                     </tr>
                     <tr>
-                        <td class="padding-xxs-top">Status&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{project.displayName}}</td>
+                        <td class="padding-xs-top">Status&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectItemStatus.displayName}}</td>
                     </tr>
                     <tr>
-                        <td class="padding-xxs-top">Defect Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate}}</td>
+                        <td class="padding-xs-top">Defect Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate | date:'MMM dd, yyyy'}}</td>
                     </tr>
                     <tr>
-                        <td class="padding-xxs-top">Completion Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.completionDate}}</td>
+                        <td class="padding-xs-top">Completion Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.completionDate | date:'MMM dd, yyyy'}}</td>
                     </tr>
                     </table>
+                    <i class="icon ion-chevron-right icon-accessory"></i>
                 </ion-item>
             </ion-list>
         </ion-content>
         <div class="ion-content-footer">
             <div class="padding">
-                <a class="button button-block button-positive" href="#/app/create-defect-defectitems/{{unit.id}}">Add New Defect Item</a>
-                <a class="button button-block button-positive" href="#/app/create-defect-defectitems/{{unit.id}}">Submit</a>
+                <a class="button button-block button-energized" href="#/app/create-defect-defectitem/add">Add New Defect Item</a>
+                <a class="button button-block button-positive" ng-click="submit()" ng-disabled="!(defectItems.length)">Submit</a>
             </div>
         </div>>
     </ion-content>

@@ -58,6 +58,36 @@ angular.module('route', ['ionic'])
         }
     })
     
+    .state('app.create-defect-defectitem-add', {
+        url: '/create-defect-defectitem/add',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/create-defect-defectitem.html',
+                controller: 'CreateDefectDefectItemCtrl'
+            }
+        }
+    })
+    
+    .state('app.create-defect-defectitem-edit', {
+        url: '/create-defect-defectitem/edit/{index}',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/create-defect-defectitem.html',
+                controller: 'CreateDefectDefectItemCtrl'
+            }
+        }
+    })
+    
+    .state('app.record-projects', {
+        url: '/record-projects',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/record-projects.html',
+                controller: 'RecordProjectsCtrl'
+            }
+        }
+    })
+    
 
     ;
     // if none of the above states are matched, use this as the fallback
