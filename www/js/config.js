@@ -58,8 +58,19 @@ angular.module('route', ['ionic'])
         }
     })
     
-    .state('app.create-defect-defectitem-add', {
-        url: '/create-defect-defectitem/add',
+    .state('app.create-defect-defectarealocation', {
+        url: '/create-defect-defectarealocation',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/create-defect-defectarealocation.html',
+                controller: 'CreateDefectAreaLocationCtrl'
+            }
+        }
+    })
+    
+    
+    .state('app.create-defect-defectitem', {
+        url: '/create-defect-defectitem',
         views: {
             'menuContent': {
                 templateUrl: 'templates/create-defect-defectitem.html',
@@ -68,22 +79,33 @@ angular.module('route', ['ionic'])
         }
     })
     
-    .state('app.create-defect-defectitem-edit', {
-        url: '/create-defect-defectitem/edit/{index}',
-        views: {
-            'menuContent': {
-                templateUrl: 'templates/create-defect-defectitem.html',
-                controller: 'CreateDefectDefectItemCtrl'
-            }
-        }
-    })
-    
+
     .state('app.record-projects', {
         url: '/record-projects',
         views: {
             'menuContent': {
                 templateUrl: 'templates/record-projects.html',
                 controller: 'RecordProjectsCtrl'
+            }
+        }
+    })
+    
+    .state('app.record-units', {
+        url: '/record-units/{projectId}',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/record-units.html',
+                controller: 'RecordUnitsCtrl'
+            }
+        }
+    })
+    
+    .state('app.record-defectitems', {
+        url: '/record-defectitems/{id}',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/record-defectitems.html',
+                controller: 'RecordDefectItemsCtrl'
             }
         }
     })

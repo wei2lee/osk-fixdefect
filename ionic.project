@@ -1,6 +1,6 @@
 {
-  "name": "hatten-purchaserapp",
-  "app_id": "com.infradesign.osk-purchaser",
+  "name": "oskfixdefect",
+  "app_id": "com.infradesign.oskfixdefect",
   "gulpStartupTasks": [
     "sass",
     "watch"

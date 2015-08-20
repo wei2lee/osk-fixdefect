@@ -1,0 +1,27 @@
+<ion-view view-title="Defect's Location" id="create-defect-unit">
+    <ion-nav-buttons side="right">
+        <a class="button button-clear" href="#app/create-defect-defectitem">
+            Next
+        </a>
+    </ion-nav-buttons>
+    <ion-content>
+        <div class="list">
+            <label class="item item-input item-select">
+                <div class="input-label">Defect Area</div>
+                <select name="defectType" ng-model="defectForm.defectItem.defectItemAreaLocation"
+                        ng-options="option.displayName for option in defectForm.defectItemAreaLocationOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <div class="item">
+                <img rwdimgmap  class="img-responsive" usemap="#auto" ng-src="{{defectForm.unit.floorplans[0].thumb}}">
+                <map name="auto" id="auto">
+                    <area ng-click="clickAreaLocation(area.areaLocation)" ng-repeat="area in defectForm.unit.floorplans[0].areas" shape="{{area.shape}}" coords="{{area.coords}}">
+                </map>
+            </div>
+            <div class="padding padding-lg-vertical">
+                <a class="button button-block button-positive" href="#app/create-defect-defectitem">Next</a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

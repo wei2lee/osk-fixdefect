@@ -101,7 +101,26 @@ angular.module('services', [])
     }
     
     this.showError = function(error) {
-           
+        var title, msg, buttonType;
+        if(error.error_message) {
+            title = error.error_message;   
+        }
+        if(error.error_description) {
+            title = error.error_description;   
+        }
+        if(error.localizedDescription) {
+            title = error.localizedDescription;   
+        }
+        if(buttonType === undefined || buttonType === null) buttonType = 'button-positive';
+        var alertPopup = $ionicPopup.alert({
+            'title': title,
+            'template': msg,
+            'buttons': [{
+                'text': 'Close',
+                'type': buttonType
+            }]
+        });
+        return alertPopup;
     }
     
     this.showAlert = function(title, msg, buttonType) {

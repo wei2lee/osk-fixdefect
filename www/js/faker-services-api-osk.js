@@ -88,6 +88,18 @@ function apiBaseService(_values, $q, $timeout) {
                 fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
         });
     }
+    this.getByUnitId = function(id) {
+        if(typeof id == 'string') id = parseInt(id);
+        return $q(function(resolve, reject) {
+            if(Math.random() >= 0)
+                fakeNetworkDelay($timeout, function() {
+                    var ret = _.filter(values, function(o) { return o.unit && o.unit.id == id; } );
+                    resolve(ret);
+                });
+            else
+                fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
+        });
+    }
 }
 
 
@@ -176,7 +188,7 @@ angular.module('services-api', [])
         value.type = _.random(1); // 0 = news, 1 = event
         value.thumb = faker.image.event();
         value.period = '12-14 JUNE, 11pm-5pm';
-        value.displayName = faker.company.companyName();
+        value.displayName = 'OSK Property';
         value.expireDate = faker.date.future();
         value.expireRemain = '';
         value.favourited = _.random(1) == 0;
@@ -185,17 +197,54 @@ angular.module('services-api', [])
     return new apiBaseService(values,$q,$timeout);
 })
 
-.service('apiPurchasedProperty', function($q,$timeout) {
+.service('apiPurchasedProperty', function($q,$timeout,apiProject) {
     var values = [];
-    for(i = 0 ; i < 10 ; i++) {
-        var value = {};
-        value.id = i;
-        value.thumb = faker.image.property();
-        value.displayName = faker.company.propertyName();
-        value.project = {
-            displayName : faker.company.projectName(),
-            thumb:faker.image.property()
-        };
+    
+    var index = 0;
+    var value = {};
+    value.id = index++;
+    value.thumb = 'img/osk/DeveloperTrackRecord/purchased/Emira_with_logo.png'
+    value.displayName = 'Emira'
+    value.project = _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("emira") >= 0; });
+    values.push(value);
+
+    var value = {};
+    value.id = index++;
+    value.thumb = 'img/osk/DeveloperTrackRecord/purchased/Mirage_with_logo.png'
+    value.displayName = 'Mirage'
+    value.project = _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("mirage") >= 0; });
+    values.push(value);
+
+    var value = {};
+    value.id =index++;
+    value.thumb = 'img/osk/DeveloperTrackRecord/purchased/Opus_with_logo.png'
+    value.displayName = 'Opus'
+    value.project = _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("opus") >= 0; });
+    values.push(value);
+
+    var value = {};
+    value.id = index++;
+    value.thumb = 'img/osk/DeveloperTrackRecord/purchased/The_Vale_with_logo.png'
+    value.displayName = 'The Vale'
+    value.project = _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("vale") >= 0; });
+    values.push(value);
+
+    var value = {};
+    value.id = index++;
+    value.thumb = 'img/osk/DeveloperTrackRecord/purchased/gravitas_with_logo.png'
+    value.displayName = 'Gravitas'
+    value.project = _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("gravitas") >= 0; });
+    values.push(value);
+
+    var value = {};
+    value.id = index++;
+    value.thumb = 'img/osk/DeveloperTrackRecord/purchased/pangaea_with_logo.png'
+    value.displayName = 'Pangaea'
+    value.project = _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("pangaea") >= 0; });
+    values.push(value);
+
+    for(i = 0 ; i < values.length ; i++) {
+        var value = values[i];
         value.area = faker.address.state();
         value.unitNo = faker.id.unitNo();
         value.unitId = faker.id.unitId();
@@ -205,41 +254,54 @@ angular.module('services-api', [])
             latitude : faker.address.latitude(),
             longitude : faker.address.longitude()
         }
-        values.push(value);
     }
     return new apiBaseService(values,$q,$timeout);
 })
 
 
-.service('apiConstruction', function($q,$timeout) {
+.service('apiConstruction', function($q,$timeout, apiProperty) {
     var values = []; 
+    
+    
+    
     for(i = 0 ; i < 10 ; i++) {
+        var property = _.sample(apiProperty.values);
         var value = {
             id:i,
             displayName: faker.company.companyName(),
-            thumb:faker.image.property(),
-            type:_.random(2)
+            thumb:property.thumb,
+            type:property.type,
+            'property':property
         };
         values.push(value);
     }
     return new apiBaseService(values,$q,$timeout);
 })
 
-.service('apiConstructionProgress', function($q,$timeout) {
+.service('apiConstructionProgress', function($q,$timeout,apiConstruction) {
     var progresses = [];
     for(i = 0 ; i < 10 ; i++) {
-        var value = {
+        var progress = {
             id:i,
             photoTakenDate: faker.date.past(),
             thumb:faker.image.progress(),
         };
-        progresses.push(value);
+        progresses.push(progress);
     }
-    ret = new apiBaseService(values,$q,$timeout);
+    ret = new apiBaseService(progress,$q,$timeout);
     ret.getByConstrucitonId = function(id) {
         return $q(function(resolve, reject) {
             if(Math.random() >= 0)
-                fakeNetworkDelay($timeout, function() { resolve(value); });
+                fakeNetworkDelay($timeout, function() {
+                    var _construction = _.find(apiConstruction.values, function(o) { return id == o.id; });
+                    var _value = {
+                        construction:_construction,
+                        progresses: progresses,
+                        project: _construction.property.project
+                    };
+                    resolve(_value); 
+                
+                });
             else
                 fakeNetworkDelay($timeout, function() { reject({error_message:'fake error'}); });
         });
@@ -247,25 +309,81 @@ angular.module('services-api', [])
     return ret;
 })
 
-.service('apiProperty', function($q,$timeout) {
+.service('apiProperty', function($q,$timeout,apiProject) {
     var values = [];
-    var ps = faker.table.properties();
-    values.push(ps[0],ps[1],ps[2]);
-    for(i = 3 ; i < 30 ; i++) {
-        var value = 
-        {
-            project: {
-                displayName : faker.company.projectName(),
-                thumb:faker.image.projectLogo()
-            },
-            id:i,
-            displayName: faker.company.propertyName(),
-            thumb:faker.image.property(),
-            type:_.random(1) + 1,
-            description:faker.lorem.paragraphs(),
-        };
-        values.push(value);
-    }
+    var index = 0;
+
+    var value = null;
+    value = {
+        project: _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("gravitas") >= 0; }),
+        id:index++,
+        displayName: 'Gravitas',
+        thumb:'img/osk/DeveloperTrackRecord/properties/Gravitas.jpg',
+        type:0,
+        description:faker.lorem.paragraphs(),
+    };
+    values.push(value);
+
+    value = {
+        project: _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("opus") >= 0; }),
+        id:index++,
+        displayName: 'Opus2',
+        thumb:'img/osk/DeveloperTrackRecord/properties/Opus2.jpg',
+        type:0,
+        description:faker.lorem.paragraphs(),
+    };
+    values.push(value);
+
+    value = {
+        project: _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("pangaea") >= 0; }),
+        id:index++,
+        displayName: 'Pangaea',
+        thumb:'img/osk/DeveloperTrackRecord/properties/Pangaea_Overview.jpg',
+        type:0,
+        description:faker.lorem.paragraphs(),
+    };
+    values.push(value);
+
+    value = {
+        project: _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("vale") >= 0; }),
+        id:index++,
+        displayName: 'The Vale',
+        thumb:'img/osk/DeveloperTrackRecord/properties/The_Vale.jpg',
+        type:0,
+        description:faker.lorem.paragraphs(),
+    };
+    values.push(value);
+
+    value = {
+        project: _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("emira") >= 0; }),
+        id:index++,
+        displayName: 'Emira',
+        thumb:'img/osk/DeveloperTrackRecord/properties/emira.png',
+        type:0,
+        description:faker.lorem.paragraphs(),
+    };
+    values.push(value);
+
+    value = {
+        project: _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("mirage lake") >= 0; }),
+        id:index++,
+        displayName: 'Mirage Lake',
+        thumb:'img/osk/DeveloperTrackRecord/properties/mirage_by_the_lake.jpg',
+        type:0,
+        description:faker.lorem.paragraphs(),
+    };
+    values.push(value);
+
+    value = {
+        project: _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("mirage residence") >= 0; }),
+        id:index++,
+        displayName: 'Mirage Residence',
+        thumb:'img/osk/DeveloperTrackRecord/properties/mirage_residence.jpg',
+        type:1,
+        description:faker.lorem.paragraphs(),
+    };
+    values.push(value);
+
     return new apiBaseService(values,$q,$timeout);
 })
 
@@ -295,16 +413,67 @@ angular.module('services-api', [])
 
 .service('apiProject', function($q,$timeout) {
     var values = [];
+    var index = 0;
     this.values = values;
-    for(i = 0 ; i < 10 ; i++) {
-        var value = {};
-        value.id = i;
-        value.displayName = faker.company.projectName();
-        value.thumb = faker.image.projectLogo();
-        value.area = faker.address.state();
-        value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
-        values.push(value);
-    }
+
+    var value
+
+    value = {};
+    value.id = index++;
+    value.displayName = 'Gravitas'
+    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/Gravitas_Logo.jpg',
+    value.area = faker.address.state();
+    value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
+    values.push(value);
+
+    value = {};
+    value.id = index++;
+    value.displayName = 'Mirage Lake'
+    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/Mirage_Lake_logo.jpg',
+    value.area = faker.address.state();
+    value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
+    values.push(value);
+
+    value = {};
+    value.id = index++;
+    value.displayName = 'Mirage Residence'
+    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/Mirage_residence_logo.jpg',
+    value.area = faker.address.state();
+    value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
+    values.push(value);
+
+    value = {};
+    value.id = index++;
+    value.displayName = 'OPUS'
+    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/OPUS_lgog.jpg',
+    value.area = faker.address.state();
+    value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
+    values.push(value);
+
+    value = {};
+    value.id = index++;
+    value.displayName = 'Pangaea'
+    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/Pangaea_logo.jpg',
+    value.area = faker.address.state();
+    value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
+    values.push(value);
+
+    value = {};
+    value.id = index++;
+    value.displayName = 'The Vale'
+    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/The_Vale_Logo.jpg',
+    value.area = faker.address.state();
+    value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
+    values.push(value);
+    
+    value = {};
+    value.id = index++;
+    value.displayName = 'Emira'
+    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/Emira_with_logo.png',
+    value.area = faker.address.state();
+    value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
+    values.push(value);
+
     return new apiBaseService(values,$q,$timeout);
 })
 
@@ -545,16 +714,8 @@ angular.module('services-api', [])
     return new apiBaseService(values,$q,$timeout);
 })
 
-.service('apiUnit', function($q,$timeout,apiProject, apiUser, apiDefectItemAreaLocation) {
+.service('apiUnit', function($q,$timeout,apiProject, apiUser,apiDefectItemAreaLocation) {
     var values = [];
-    
-//    <img src="floor_plan_example5.png" alt="" usemap="#map" />
-//<map name="map">
-//    <area shape="rect" coords="599, 724, 1322, 1325" />
-//    <area shape="rect" coords="121, 723, 600, 1325" />
-//    <area shape="rect" coords="766, 119, 1322, 725" />
-//    <area shape="rect" coords="118, 120, 764, 725" />
-//</map>
     
     for(i = 0 ; i < 200 ; i++) {
         var value = {};
@@ -568,23 +729,23 @@ angular.module('services-api', [])
             thumb:'img/floorplan/floor_plan_example5.png',
             areas:[
                 {
-                areaLocation: _.find(apiDefectItemAreaLocation, function(o) { return o.displayName.toLowerCase().indexOf('kicthen')>=0; }),
-                coords:'118, 120, 764, 725',
+                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('kitchen')>=0; }),
+                coords:'116, 114, 760, 725',
                 shape:'rect'
                 },
                 {
-                areaLocation: _.find(apiDefectItemAreaLocation, function(o) { return o.displayName.toLowerCase().indexOf('dining')>=0; }),
-                coords:'766, 119, 1322, 725',
+                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('dining')>=0; }),
+                coords:'760, 112, 1325, 724',
                 shape:'rect'
                 },
                 {
-                areaLocation: _.find(apiDefectItemAreaLocation, function(o) { return o.displayName.toLowerCase().indexOf('foyer')>=0; }),
-                coords:'121, 723, 600, 1325',
+                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('foyer')>=0; }),
+                coords:'117, 727, 600, 1323',
                 shape:'rect'
                 },
                 {
-                areaLocation: _.find(apiDefectItemAreaLocation, function(o) { return o.displayName.toLowerCase().indexOf('living room')>=0; }),
-                coords:'766, 119, 1322, 725',
+                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('living room')>=0; }),
+                coords:'599, 726, 1324, 1327',
                 shape:'rect'
                 }
             ]
@@ -594,17 +755,18 @@ angular.module('services-api', [])
         values.push(value);
     }
     
-    
-    console.log(values);
-    
     return new apiBaseService(values,$q,$timeout);
 })
 
-.service('apiDefectItem', function($q,$timeout) {
+.service('apiDefectItem', function($q,$timeout,apiUnit) {
     var values = [];
     
-    
-    
+//    var unit = _.sample(apiUnit.values);
+//    
+//    values.push({
+//        'project':unit.project,
+//        'unit':unit,
+//    });
     
     return new apiBaseService(values,$q,$timeout);
 })

@@ -17,6 +17,7 @@ angular.module('starter', [
     'angular.filter',
     'uuid4',
     'directive',
+    'rwdImageMaps',
 //    'monospaced.qrcode',
     'jett.ionic.filter.bar'
 ])

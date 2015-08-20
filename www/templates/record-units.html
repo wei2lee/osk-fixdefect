@@ -1,0 +1,18 @@
+<ion-view view-title="Records">
+    <ion-content>
+        <div class="list" ng-if="!(units.length)">
+            <a class="item">
+                <button class="button button-clear">
+                    There's no defect Item in any project yet
+                </button>
+            </a>
+        </div>
+        <div class="list card fade-in-animation" ng-repeat="unit in units">
+            <a href="#/app/record-defectitems/{{unit.id}}" class="item item-icon-left item-thumbnail-left">
+                <img ng-src="{{unit.project.thumb}}">
+                <p><b>{{unit.unitNo}}<b></p>
+                <p>Number of defect items : {{unit.noOfDefectItem}}</p>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,37 @@
+<ion-view view-title="{{unit.unitNo}}" >
+    <ion-nav-title>
+       {{unit.unitNo}}
+    </ion-nav-title>
+    <ion-content>
+            <ion-list class="card">
+                <ion-item class="fade-animation" ng-repeat="defectItem in defectItems">
+                    <table style="table-layout:fixed; width:100%;">
+                    <colgroup>
+                        <col style="width:130px;">
+                        <col style="width:15px;">
+                        <col style="">
+                    </colgroup>
+                        
+                    <tr>
+                        <td></td><td></td><td></td>
+                    </tr>
+                    <tr>
+                        <td style="word-wrap:break-all;" colspan=3>
+                            <p>{{defectItem.defectType.displayName}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="" class="padding-xs-top">Status&nbsp;</td><td style="">&nbsp;:&nbsp;</td><td class="text-left">&nbsp;{{defectItem.defectItemStatus.displayName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-xs-top">Defect Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate | date:'MMM dd, yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-xs-top">Completion Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.completionDate | date:'MMM dd, yyyy'}}</td>
+                    </tr>
+                    </table>
+<!--                    <i class="icon ion-chevron-right icon-accessory"></i>-->
+                </ion-item>
+            </ion-list>
+    </ion-content>
+</ion-view>

@@ -233,6 +233,12 @@ $light-theme-bg-color:#fbfbfb;
 .text-center {
     text-align: center;
 }
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
 
 .center-block {
     margin:0 auto;   
@@ -293,6 +299,9 @@ $light-theme-bg-color:#fbfbfb;
     display: block;
     margin: 0 auto;
 }
+
+
+
 
 .vertical-center-container {
     position: relative;
@@ -397,6 +406,17 @@ $light-theme-bg-color:#fbfbfb;
         }
     }
 }
+
+.wrapping-word {
+    overflow: initial;
+    white-space: initial;
+}
+
+.empty-list-hint {
+    line-height: 1.4em;
+    text-align: left;
+}
+
 /* ==========================================================================
    End Utility
    ========================================================================== */
