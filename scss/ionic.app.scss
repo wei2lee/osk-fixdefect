@@ -407,16 +407,6 @@ $light-theme-bg-color:#fbfbfb;
     }
 }
 
-.wrapping-word {
-    overflow: initial;
-    white-space: initial;
-}
-
-.empty-list-hint {
-    line-height: 1.4em;
-    text-align: left;
-}
-
 /* ==========================================================================
    End Utility
    ========================================================================== */
@@ -648,6 +638,32 @@ ion-side-menu {
 .button.button-full.footer-button {
     margin-bottom:0;
     margin-top:0;
+}
+
+ion-item.defect-item {
+    font-size:12px;   
+}
+
+.item.ion-empty-list-hint-item,ion-item.ion-empty-list-hint-item {
+    overflow: initial;
+    white-space: initial;
+    width:100%;
+    display:table;
+    >*:first-child {
+        line-height: 1.4em;
+        text-align: left;
+        display:table-cell;
+        vertical-align: middle;
+    }
+}
+
+
+
+#filter-defect-item-modal {
+    @media (min-width: 680px) {
+        top:35%;
+        bottom:35%;
+    }
 }
 
 /* ==========================================================================

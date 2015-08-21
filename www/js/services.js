@@ -104,13 +104,14 @@ angular.module('services', [])
         var title, msg, buttonType;
         if(error.error_message) {
             title = error.error_message;   
-        }
-        if(error.error_description) {
+        }else if(error.error_description) {
             title = error.error_description;   
-        }
-        if(error.localizedDescription) {
+        }else if(error.localizedDescription) {
             title = error.localizedDescription;   
+        }else{
+            title = JSON.stringify(error);
         }
+        
         if(buttonType === undefined || buttonType === null) buttonType = 'button-positive';
         var alertPopup = $ionicPopup.alert({
             'title': title,

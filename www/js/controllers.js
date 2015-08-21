@@ -6,16 +6,20 @@ angular.module('starter.controllers', ["services"])
 })
 
 
-.controller('CreateDefectProjectsCtrl', function ($scope, u, $state, apiProject) {
+.controller('CreateDefectProjectsCtrl', function ($q, $scope, u, $state, apiProject) {
+
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
+            
             $scope.projects = [];
             u.showProgress();
+            $scope.loading = true;
             apiProject.getAll().then(function(results) {
                 $scope.projects = results;  
             }).catch(function(error) {
-
+                u.showError(error);
             }).finally(function() {
+                $scope.loading = false;
                  u.hideProgress();
             });
         }
@@ -63,7 +67,7 @@ angular.module('starter.controllers', ["services"])
             apiUnit.getByProjectId($state.params.projectId).then(function(results) {
                 $scope.units = results;  
             }).catch(function(error) {
-
+                u.showError(error);
             }).finally(function() {
                  u.hideProgress();
             });
@@ -83,7 +87,7 @@ angular.module('starter.controllers', ["services"])
                 $scope.unit = results;  
                 $scope.owner = results.owner;
             }).catch(function(error) {
-
+                u.showError(error);
             }).finally(function() {
                  u.hideProgress();
             });
@@ -100,7 +104,7 @@ angular.module('starter.controllers', ["services"])
             apiUnit.getById($state.params.id).then(function(results) {
                 $scope.unit = results;  
             }).catch(function(error) {
-
+                u.showError(error);
             }).finally(function() {
                  u.hideProgress();
             });
@@ -158,17 +162,24 @@ angular.module('starter.controllers', ["services"])
 .controller('CreateDefectAreaLocationCtrl',  function ($cordovaImagePicker, 
                                                      $cordovaCamera, 
                                                      $cordovaFile,
-                                                     $scope, $q, u, $state, apiUnit, defectForm, $ionicHistory,
+                                                     $timeout, $scope, $q, u, $state, apiUnit, defectForm, $ionicHistory,
                                                      apiDefectItemAreaLocation, 
                                                      apiDefectItemReason,
                                                      apiDefectItemStatus,
                                                      apiDefectItemSeverity,
                                                      apiDefectType
+                                                        
                                                     ) {
     var _this = this;
     
     $scope.clickAreaLocation = function(areaLocation) {
         $scope.defectForm.defectItem.defectItemAreaLocation = areaLocation;
+    }
+    
+    $scope.goBack = function() {
+        console.log('goBack');
+        defectForm.defectItem = null;
+        $ionicHistory.goBack(-1);
     }
     
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
@@ -192,15 +203,22 @@ angular.module('starter.controllers', ["services"])
                     $scope.defectForm.defectItem.project = defectForm.project;
                     $scope.defectForm.defectItem.unit = defectForm.unit;
                     $scope.defectForm.defectItem.defectStartDate = new Date();
-                    $scope.defectForm.defectItem.defectLocation = 'img/defect/ceiling-crack-repair.jpg';
+                    $scope.defectForm.defectItem.defectLocation = '';
                     $scope.defectForm.defectItem.defectType = _.first($scope.defectForm.defectTypeOptions);
                     $scope.defectForm.defectItem.defectItemSeverity = _.first($scope.defectForm.defectItemSeverityOptions);
                     $scope.defectForm.defectItem.defectItemReason = _.first($scope.defectForm.defectItemReasonOptions);
                     $scope.defectForm.defectItem.defectItemStatus = $scope.defectForm.defectItemStatusOptions[1];
-                    $scope.defectForm.defectItem.defectItemAreaLocation = $scope.defectForm.defectItemAreaLocationOptions[0];
+                    $scope.defectForm.defectItem.defectItemAreaLocation = $scope.defectForm.unit.floorplans[0].areas[0].areaLocation;
                 }
+                
+                //its hard to put thing together, maphighlight + responsive map area + ionic
+//                $timeout(function() {
+//                    $map = $('img[usemap="#auto"]');
+//                    console.log($map.length);
+//                    $map.maphilight({fade: false});
+//                },100);
             }).catch(function(error) {
-
+                u.showError(error);
             }).finally(function() {
                  u.hideProgress();
             });
@@ -211,110 +229,88 @@ angular.module('starter.controllers', ["services"])
 .controller('CreateDefectDefectItemCtrl', function ($cordovaImagePicker, 
                                                      $cordovaCamera, 
                                                      $cordovaFile,
-                                                     $scope, $q, u, $state, apiUnit, defectForm, $ionicHistory,
+                                                     $ionicActionSheet, $scope, $q, u, $state, apiUnit, defectForm, $ionicHistory,
                                                      apiDefectItemAreaLocation, 
                                                      apiDefectItemReason,
                                                      apiDefectItemStatus,
                                                      apiDefectItemSeverity,
                                                      apiDefectType
                                                     ) {
+
     var _this = this;
-
-    
-
-    $scope.urlForImage = function (imageName) {
-        var name = imageName.substr(imageName.lastIndexOf('/') + 1);
-        var trueOrigin = cordova.file.dataDirectory + name;
-        return trueOrigin;
-    }
-    
-    $scope.pickImage = function() { 
-//        //img/defect/ceiling-crack-repair.jpg   
-        var options = {
-            maximumImagesCount: 1,
-            width: 640,
-            height: 640,
-            quality: 50
-        };
-        $cordovaImagePicker.getPictures(options).then(function (results) {
-            for (var i = 0; i < results.length; i++) {
-                console.log('Image URI: ' + results[i]);
-                u.showAlert(results[i]);
-            }
-            if(results.length) {
-                $scope.defectItemLocation = results[0];
-            }
-        }, function (error) {
-            // error getting photos
-            u.showAlert(error);
-        });  
-                                   
-                                   return;
-// 2
-        var options = {
-            destinationType: Camera.DestinationType.FILE_URI,
-            sourceType: Camera.PictureSourceType.CAMERA, // Camera.PictureSourceType.PHOTOLIBRARY
-            allowEdit: false,
-            encodingType: Camera.EncodingType.JPEG,
-            popoverOptions: CameraPopoverOptions,
-        };
-
-        // 3
-        $cordovaCamera.getPicture(options).then(function (imageData) {
-
-            // 4
-            onImageSuccess(imageData);
-
-            function onImageSuccess(fileURI) {
-                createFileEntry(fileURI);
-            }
-
-            function createFileEntry(fileURI) {
-                window.resolveLocalFileSystemURL(fileURI, copyFile, fail);
-            }
-
-            // 5
-            function copyFile(fileEntry) {
-                var name = fileEntry.fullPath.substr(fileEntry.fullPath.lastIndexOf('/') + 1);
-                var newName = makeid() + name;
-
-                window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (fileSystem2) {
-                        fileEntry.copyTo(
-                            fileSystem2,
-                            newName,
-                            onCopySuccess,
-                            fail
-                        );
-                    },
-                    fail);
-            }
-
-            // 6
-            function onCopySuccess(entry) {
-                $scope.$apply(function () {
-                    //$scope.images.push(entry.nativeURL);
-                    $scope.defectItem.defectLocation = entry.nativeURL;
-                });
-            }
-
-            function fail(error) {
-                console.log("fail: " + error.code);
-            }
-
-            function makeid() {
-                var text = "";
-                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-                for (var i = 0; i < 5; i++) {
-                    text += possible.charAt(Math.floor(Math.random() * possible.length));
-                }
-                return text;
-            }
-
-        }, function (err) {
-            console.log(err);
+    $scope.pickPhoto = function() { 
+        var hideSheet = $ionicActionSheet.show({
+           buttons: [
+               {
+                   text: 'Library'
+               },
+               {
+                   text: 'Camera'
+               }
+            ],
+           titleText: 'Pick image from',
+           cancelText: 'Cancel',
+           cancel: function () {
+               // add cancel code..
+           },
+           buttonClicked: function (index) {
+               if(index==0) {
+                   $scope.pickFromLibrary();
+               }else if(index==1){
+                   $scope.pickFromCamera();
+               }
+               return true;
+           }
         });
     };
+    $scope.removePhoto = function() {
+        defectForm.defectItem.defectLocation = null;
+    }
+    $scope.pickFromLibrary = function() {
+        try {
+            var options = { 
+                quality : 50, 
+                destinationType : Camera.DestinationType.DATA_URL, 
+                sourceType : Camera.PictureSourceType.PHOTOLIBRARY, 
+                allowEdit : true,
+                encodingType: Camera.EncodingType.JPEG,
+                targetWidth: 300,
+                targetHeight: 300,
+                popoverOptions: CameraPopoverOptions,
+                saveToPhotoAlbum: true
+            };
+            $cordovaCamera.getPicture(options).then(function(imageData) {
+                defectForm.defectItem.defectLocation = "data:image/jpeg;base64," + imageData;
+            }, function(err) {
+                u.showError(err);
+            });
+        }catch(ex) {
+            u.showError(ex);
+        }
+    }
+    $scope.pickFromCamera = function() {
+        try {
+            var options = { 
+                quality : 50, 
+                destinationType : Camera.DestinationType.DATA_URL, 
+                sourceType : Camera.PictureSourceType.CAMERA, 
+                allowEdit : true,
+                encodingType: Camera.EncodingType.JPEG,
+                targetWidth: 300,
+                targetHeight: 300,
+                popoverOptions: CameraPopoverOptions,
+                saveToPhotoAlbum: true
+            };
+            $cordovaCamera.getPicture(options).then(function(imageData) {
+                defectForm.defectItem.defectLocation = "data:image/jpeg;base64," + imageData;
+            }, function(err) {
+                u.showError(err);
+            });
+        }catch(ex) {
+            u.showError(ex);
+        }
+    }
+
     $scope.done = function() {
         if(defectForm.defectItem && defectForm.defectItems.indexOf(defectForm.defectItem) < 0) {
             defectForm.defectItems.push(defectForm.defectItem);
@@ -325,7 +321,11 @@ angular.module('starter.controllers', ["services"])
     
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
+            $scope.hideDefectStartDate = true;
+            $scope.hideDefectCompletionDate = true;
+            
             $scope.defectForm = defectForm;
+            //$scope.defectForm.project = {displayName:'hahaha'};
         }
     });
 })
@@ -337,6 +337,7 @@ angular.module('starter.controllers', ["services"])
         if(state.direction != 'back') {
             $scope.projects = [];
             u.showProgress();
+            $scope.loading = false;
             apiDefectItem.getAll().then(function(results) {
                 var defectItems = results;  
                 var defectItemsByProjectIds = _.groupBy (defectItems, function(o) { return o.project.id; });
@@ -349,8 +350,9 @@ angular.module('starter.controllers', ["services"])
                     $scope.projects.push(p);
                 }
             }).catch(function(error) {
-
+                u.showError(error);
             }).finally(function() {
+                $scope.loading = true;
                  u.hideProgress();
             });
         }
@@ -363,6 +365,7 @@ angular.module('starter.controllers', ["services"])
         if(state.direction != 'back') {
             $scope.units = [];
             u.showProgress();
+            $scope.loading = false;
             apiDefectItem.getByProjectId($state.params.projectId).then(function(results) {
                 var defectItems = results;  
                 var defectItemsByUnitIds = _.groupBy(defectItems, function(o) { return o.unit.id; });
@@ -372,7 +375,74 @@ angular.module('starter.controllers', ["services"])
                 }
                 console.log($scope.units);
             }).catch(function(error) {
+                u.showError(error);
+            }).finally(function() {
+                $scope.loading = true;
+                 u.hideProgress();
+            });
+        }
+    });
+})
 
+.controller('RecordDefectItemsCtrl', function ($q, $timeout, $ionicModal, $scope, u, $state, 
+                                                 apiDefectItemAreaLocation, 
+                                                 apiDefectItemReason,
+                                                 apiDefectItemStatus,
+                                                 apiDefectItemSeverity,
+                                                 apiDefectType,
+                                                 apiDefectItem
+                                                ) {
+    var _this = this;
+    
+    $ionicModal.fromTemplateUrl('templates/modal/defectitems-filter.html', {
+        scope: $scope,
+        animation: 'slide-in-up'
+    }).then(function (modal) {
+        $scope.modal = modal;
+        
+        console.log('init modal');
+    });
+    $scope.closeModal = function () {
+        $scope.modal.hide();
+    };
+
+    $scope.openFilter = function () {
+        $scope.modal.show();
+        var modalHidden = $scope.$on('modal.hidden', function () {
+            modalHidden();
+        });
+    };
+    
+    $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
+        if(state.direction != 'back') {
+            $scope.defectItems = [];
+            $scope.filter = {};
+            u.showProgress();
+            
+            $q.all ([
+                apiDefectItemAreaLocation.getAll(),
+                apiDefectItemReason.getAll(),
+                apiDefectItemStatus.getAll(),
+                apiDefectItemSeverity.getAll(),
+                apiDefectType.getAll(),
+                apiDefectItem.getByUnitId($state.params.id)
+                
+            ]).then(function(results) {
+                $scope.filter.defectItemAreaLocationOptions = results[0];
+                $scope.filter.defectItemReasonOptions =  results[1];
+                $scope.filter.defectItemStatusOptions =  results[2];
+                $scope.filter.defectItemSeverityOptions = results[3];
+                $scope.filter.defectTypeOptions = results[4];
+                
+                
+                
+                $scope.filter.defectType = null;
+                $scope.filter.defectItemStatus = null;
+                
+                $scope.defectItems = results[5]; 
+                
+            }).catch(function(error) {
+                u.showError(error);
             }).finally(function() {
                  u.hideProgress();
             });
@@ -380,16 +450,46 @@ angular.module('starter.controllers', ["services"])
     });
 })
 
-.controller('RecordDefectItemsCtrl', function ($scope, u, $state, apiDefectItem) {
+
+.controller('RecordDefectItemCtrl',  function ($timeout, $scope, $q, u, $state, apiUnit, $ionicHistory,
+                                                     apiDefectItemAreaLocation, 
+                                                     apiDefectItemReason,
+                                                     apiDefectItemStatus,
+                                                     apiDefectItemSeverity,
+                                                     apiDefectType,
+                                                     apiDefectItem
+                                                        
+                                                    ) {
     var _this = this;
+    
+    $scope.back = function() {
+        $ionicHistory.goBack(-1);
+    }
+    
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
-            $scope.defectItems = [];
             u.showProgress();
-            apiDefectItem.getByUnitId($state.params.id).then(function(results) {
-                $scope.defectItems = results;  
+            $q.all ([
+                apiDefectItemAreaLocation.getAll(),
+                apiDefectItemReason.getAll(),
+                apiDefectItemStatus.getAll(),
+                apiDefectItemSeverity.getAll(),
+                apiDefectType.getAll(),
+                apiDefectItem.getById($state.params.id)
+            ]).then(function(results) {
+                
+                $scope.defectItemAreaLocationOptions = results[0];
+                $scope.defectItemReasonOptions =  results[1];
+                $scope.defectItemStatusOptions =  results[2];
+                $scope.defectItemSeverityOptions = results[3];
+                $scope.defectTypeOptions = results[4];
+                $scope.defectItem = results[5];
+                
+                $scope.unit = $scope.defectItem.unit;
+                $scope.project = $scope.defectItem.project;
+                
             }).catch(function(error) {
-
+                u.showError(error);
             }).finally(function() {
                  u.hideProgress();
             });

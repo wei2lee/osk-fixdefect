@@ -318,7 +318,7 @@ angular.module('services-api', [])
         project: _.find(apiProject.values, function(o){ return o.displayName.toLowerCase().indexOf("gravitas") >= 0; }),
         id:index++,
         displayName: 'Gravitas',
-        thumb:'img/osk/DeveloperTrackRecord/properties/Gravitas.jpg',
+        thumb:'img/osk/DeveloperTrackRecord/properties/Gravitas2.jpg',
         type:0,
         description:faker.lorem.paragraphs(),
     };
@@ -329,7 +329,7 @@ angular.module('services-api', [])
         id:index++,
         displayName: 'Opus2',
         thumb:'img/osk/DeveloperTrackRecord/properties/Opus2.jpg',
-        type:0,
+        type:1,
         description:faker.lorem.paragraphs(),
     };
     values.push(value);
@@ -339,7 +339,7 @@ angular.module('services-api', [])
         id:index++,
         displayName: 'Pangaea',
         thumb:'img/osk/DeveloperTrackRecord/properties/Pangaea_Overview.jpg',
-        type:0,
+        type:1,
         description:faker.lorem.paragraphs(),
     };
     values.push(value);
@@ -349,7 +349,7 @@ angular.module('services-api', [])
         id:index++,
         displayName: 'The Vale',
         thumb:'img/osk/DeveloperTrackRecord/properties/The_Vale.jpg',
-        type:0,
+        type:1,
         description:faker.lorem.paragraphs(),
     };
     values.push(value);
@@ -359,7 +359,7 @@ angular.module('services-api', [])
         id:index++,
         displayName: 'Emira',
         thumb:'img/osk/DeveloperTrackRecord/properties/emira.png',
-        type:0,
+        type:1,
         description:faker.lorem.paragraphs(),
     };
     values.push(value);
@@ -369,7 +369,7 @@ angular.module('services-api', [])
         id:index++,
         displayName: 'Mirage Lake',
         thumb:'img/osk/DeveloperTrackRecord/properties/mirage_by_the_lake.jpg',
-        type:0,
+        type:1,
         description:faker.lorem.paragraphs(),
     };
     values.push(value);
@@ -421,7 +421,7 @@ angular.module('services-api', [])
     value = {};
     value.id = index++;
     value.displayName = 'Gravitas'
-    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/Gravitas_Logo.jpg',
+    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/Gravitas_logo.jpg',
     value.area = faker.address.state();
     value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
     values.push(value);
@@ -469,7 +469,7 @@ angular.module('services-api', [])
     value = {};
     value.id = index++;
     value.displayName = 'Emira'
-    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/Emira_with_logo.png',
+    value.thumb = 'img/osk/DeveloperTrackRecord/osklogo/emiralogo.jpg',
     value.area = faker.address.state();
     value.address = faker.address.streetAddress() + ", " + faker.address.city() + ", " + faker.address.stateAbbr() + " " + faker.address.zipCode();
     values.push(value);
@@ -669,7 +669,7 @@ angular.module('services-api', [])
     
     values = [
         {id:1, displayName:'In Progress'},
-        {id:2, displayName:'Not Started'},
+        {id:2, displayName:'Pending'},
         {id:3, displayName:'Completed'}
     ];
     return new apiBaseService(values,$q,$timeout);
@@ -692,24 +692,11 @@ angular.module('services-api', [])
     this.values = values;
     
     values = [
-    {id:0,displayName:'Ceiling - C1  Rough surface / chipped / cracked / damaged / broken',},
-    {id:1,displayName:'Ceiling - C4  Others',},
-    {id:2,displayName:'Door (include door panel, frame, glazing, architrave, heelstone, roller shutter, etc) - D1  Rough surface / poor joint / chipped / cracked / damaged / dented / sagged / warped / scratched',},
-    {id:3,displayName:'Door (include door panel, frame, glazing, architrave, heelstone, roller shutter, etc) - D2  Misaligned / unlevel',},
-    {id:4,displayName:'Door (include door panel, frame, glazing, architrave, heelstone, roller shutter, etc) - D3  Visible gap / inconsistent gap / poor pointing',},
-    {id:5,displayName:'Floor (include screeding, tiles, parquet, timber strips, etc) - F2  Rough surface / patchy / scratched',},
-    {id:6,displayName:'Plaster Wall / Paintwork - PW2  Rough surface / bulging / hollowness / chipped / pin hole',},
-    {id:7,displayName:'Sanitary wares & fittings / Plumbing - S1  Leaking (e.g. pipe, slab, water tank, etc.',},
-    {id:8,displayName:'Wall Tiles - T1  Broken / chipped / cracked / hollowness',},
-    {id:9,displayName:'Electrical - 13amp Power Point c/w Cover',},
-    {id:10,displayName:'Electrical - Air Conditioner Point c/w Switch',},
-    {id:11,displayName:'Electrical - Car Porch Light Point',},
-    {id:12,displayName:'Electrical - DB Boxes & Cover',},
-    {id:13,displayName:'Cleaning Services',},
-    {id:14,displayName:'Cleaning Common Area',},
-    {id:15,displayName:'Cleaning Staircase',},
-    {id:16,displayName:'Cleaning Staircase',},
-    {id:17,displayName:'Normal Cleaning',}         
+    {id:0,displayName:'Electrical( include Power Point, Air Conditioner Point, Car Porch Ligh Point, DB Boxes & Cover)',},
+    {id:1,displayName:'Contruction(include Ceiling, Door, Floor, Wall) ',},
+    {id:2,displayName:'Plumbing(include Leaking, Sanitary Wares)',},
+    {id:3,displayName:'Fitting(include Furniture, Rough Surface)',},
+    {id:4,displayName:'Cleaning Service(Common Area & Staircase)',}     
     ];
     return new apiBaseService(values,$q,$timeout);
 })
@@ -729,22 +716,22 @@ angular.module('services-api', [])
             thumb:'img/floorplan/floor_plan_example5.png',
             areas:[
                 {
-                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('kitchen')>=0; }),
+                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('kitchen')==0; }),
                 coords:'116, 114, 760, 725',
                 shape:'rect'
                 },
                 {
-                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('dining')>=0; }),
+                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('dining room')==0; }),
                 coords:'760, 112, 1325, 724',
                 shape:'rect'
                 },
                 {
-                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('foyer')>=0; }),
+                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('foyer')==0; }),
                 coords:'117, 727, 600, 1323',
                 shape:'rect'
                 },
                 {
-                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('living room')>=0; }),
+                areaLocation: _.find(apiDefectItemAreaLocation.values, function(o) { return o.displayName.toLowerCase().indexOf('living room')==0; }),
                 coords:'599, 726, 1324, 1327',
                 shape:'rect'
                 }
@@ -761,12 +748,12 @@ angular.module('services-api', [])
 .service('apiDefectItem', function($q,$timeout,apiUnit) {
     var values = [];
     
-//    var unit = _.sample(apiUnit.values);
-//    
-//    values.push({
-//        'project':unit.project,
-//        'unit':unit,
-//    });
+    var unit = _.sample(apiUnit.values);
+    
+    values.push({
+        'project':unit.project,
+        'unit':unit,
+    });
     
     return new apiBaseService(values,$q,$timeout);
 })

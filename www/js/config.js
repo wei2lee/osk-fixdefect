@@ -110,6 +110,16 @@ angular.module('route', ['ionic'])
         }
     })
     
+    .state('app.record-defectitem', {
+        url: '/record-defectitem/{id}',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/record-defectitem.html',
+                controller: 'RecordDefectItemCtrl'
+            }
+        }
+    })
+    
 
     ;
     // if none of the above states are matched, use this as the fallback

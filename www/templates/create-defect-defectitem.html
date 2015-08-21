@@ -6,12 +6,25 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <label class="item">
-                <img class="img-responsive" ng-src="{{defectForm.defectItem.thumb}}">
+            <label class="item item-input item-divider">
+                <span class="input-label"><b>Project</b></span>
+                <input class="text-right full-width padding-md-right" type="text" disabled value="{{defectForm.project.displayName}}">
+            </label>
+            <label class="item item-input item-divider">
+                <span class="input-label"><b>Unit</b></span>
+                <input class="text-right full-width padding-md-right" type="text" disabled value="{{defectForm.unit.unitNo}}">
             </label>
             <label class="item item-input">
-                <span class="input-label">Defect Start Date</span>
+                <span class="input-label">Defect Submit Date</span>
+                <input class="text-right" type="date" placeholder="" ng-model="defectForm.defectItem.defectSubmitDate">
+            </label>
+            <label class="item item-input" ng-hide="hideDefectStartDate">
+                <div class="input-label">Defect Start Date</div>
                 <input class="text-right" type="date" placeholder="" ng-model="defectForm.defectItem.defectStartDate">
+            </label>
+            <label class="item item-input" ng-hide="hideDefectCompletionDate">
+                <div class="input-label">Defect Completion Date</div>
+                <input class="text-right" type="date" placeholder="" ng-model="defectForm.defectItem.defectCompletionDate">
             </label>
             <label class="item item-input item-select">
                 <div class="input-label">Severity</div>
@@ -34,11 +47,15 @@
                         >
                 </select>
             </label>
-            <label class="item item-input item-stacked-label item-input-image">
-                <div class="input-label">Defect's Location</div><button style="float:right; margin-right:10px;" class="button button-small button button-positive" ng-click="pickImage()">Pick a photo</button>
-                <div class="image margin-xs-vertical" ng-style="{'background-image': 'url(' + defectForm.defectItem.defectLocation + ')'}">
+            <div class="item item-input item-stacked-label item-input-image">
+                <div class="input-label">Defect's Location</div>
+                
+                <button style="float:right; margin-right:10px;" class="button button-small button button-positive" ng-click="pickPhoto()">Pick a photo</button>
+                <button ng-if="defectForm.defectItem.defectLocation" style="float:right; margin-right:10px;" class="button button-small button button-assertive" ng-click="removePhoto()">Remove photo</button>
+                
+                <div ng-if="defectForm.defectItem.defectLocation" class="image margin-xs-vertical" ng-style="{'background-image': 'url(' + defectForm.defectItem.defectLocation + ')'}">
                 </div>
-            </label>
+            </div>
             <label class="item item-input item-select">
                 <div class="input-label">Reason Type</div>
                 <select name="defectItemReason" ng-model="defectForm.defectItem.defectItemReason"
@@ -46,15 +63,13 @@
                         >
                 </select>
             </label>
-            <label class="item item-input">
-                <div class="input-label">Defect Due Date</div>
-                <input class="text-right" type="date" placeholder="" ng-model="defectForm.defectItem.defectDueDate">
-            </label>
-            <label class="item item-input item-stacked-label item-input-textarea">
-                <div class="input-label">Defect Description</div>
-                <textarea autogrow row=3 class="margin-xs-vertical" ng-model="defectForm.defectItem.description">
+            <label class="item item-input item-stacked-label item-input-textarea padding-xs-right">
+                <div class="input-label">Remark</div>
+                <div>
+                <textarea autogrow row=3 class="margin-xs-vertical margin-md-right" ng-model="defectForm.defectItem.description">
                 
                 </textarea>
+                </div>
             </label>
             <label class="item item-input item-select">
                 <div class="input-label">Status</div>
@@ -67,5 +82,9 @@
                 <a class="button button-block button-positive" ng-click="done()">Done</a>
             </div>
         </div>
+<!--
+            <ion-footer-bar align-title="left" class="bar-assertive">
+            </ion-footer-bar>
+-->
     </ion-content>
 </ion-view>

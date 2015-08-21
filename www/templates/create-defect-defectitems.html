@@ -1,4 +1,9 @@
 <ion-view view-title="Defects" id="defectslist">
+<!--
+    <ion-nav-title>
+       {{defectForm.unit.unitNo}}
+    </ion-nav-title>
+-->
     <ion-nav-buttons side="right">
         <a class="button button-clear" href="#/app/create-defect-defectarealocation">
             Add
@@ -6,29 +11,30 @@
     </ion-nav-buttons>
     <ion-content scroll=false>
         <ion-content class="ion-content-body">
-            <div class="list fade-animation" ng-if="project">
+            <div class="list fade-animation" ng-if="defectForm.project">
                 <div class="item">
                     <table>
                         <tr>
-                            <td>Project&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{project.displayName}}</td>
+                            <td>Project&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectForm.project.displayName}}</td>
                         </tr>
                         <tr>
-                            <td class="padding-top">UnitNo&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{unit.unitNo}}</td>
+                            <td class="padding-top">UnitNo&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectForm.unit.unitNo}}</td>
                         </tr>
                     </table>
                 </div>
             </div>
             <div class="list" ng-if="!(defectForm.defectItems.length)">
-                <div class="item wrapping-word" >
-                    <a class="empty-list-hint  button button-clear button-positive" href="#/app/create-defect-defectarealocation">There's no defect item yet. Add a defect item</a>
+                <div class="item ion-empty-list-hint-item" >
+                    <a class="button button-clear button-positive" href="#/app/create-defect-defectarealocation">There's no defect item yet. Tap to add a defect item</a>
                 </div>
             </div>
             <ion-list class="card">
-                <ion-item class="item-icon-right fade-animation" ng-repeat="defectItem in defectForm.defectItems" ng-click="edit(defectForm.defectItems[$index])">
+                <ion-item class="item-icon-right fade-animation item-thumbnail-left defect-item" ng-repeat="defectItem in defectForm.defectItems" ng-click="edit(defectForm.defectItems[$index])">
+                    <img ng-src="{{defectItem.defectLocation}}">
                     <table style="table-layout:fixed; width:100%;">
                     <colgroup>
-                        <col style="width:130px;">
-                        <col style="width:15px;">
+                        <col style="width:110px;">
+                        <col style="width:10px;">
                         <col style="">
                     </colgroup>
                         
@@ -36,29 +42,41 @@
                         <td></td><td></td><td></td>
                     </tr>
                     <tr>
-                        <td style="word-wrap:break-all;" colspan=3>
+                        <td colspan=3>
                             <p>{{defectItem.defectType.displayName}}</p>
                         </td>
                     </tr>
                     <tr>
-                        <td style="" class="padding-xs-top">Status&nbsp;</td><td style="">&nbsp;:&nbsp;</td><td class="text-left">&nbsp;{{defectItem.defectItemStatus.displayName}}</td>
+                        <td style="" class="">Status&nbsp;</td><td style="">&nbsp;:&nbsp;</td><td class="text-left">&nbsp;{{defectItem.defectItemStatus.displayName}}</td>
                     </tr>
                     <tr>
-                        <td class="padding-xs-top">Defect Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate | date:'MMM dd, yyyy'}}</td>
+                        <td class="">Submit Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectSubmitDate?(defectItem.defectSubmitDate | date:'MMM dd, yyyy'):'-'}}</td>
                     </tr>
                     <tr>
-                        <td class="padding-xs-top">Completion Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.completionDate | date:'MMM dd, yyyy'}}</td>
+                        <td class="">Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate?(defectItem.defectStartDate | date:'MMM dd, yyyy'):'-'}}}</td>
+                    </tr>
+                    <tr>
+                        <td class="">Completion Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectCompletionDate?(defectItem.defectCompletionDate | date:'MMM dd, yyyy'):'-'}}</td>
                     </tr>
                     </table>
                     <i class="icon ion-chevron-right icon-accessory"></i>
                 </ion-item>
             </ion-list>
         </ion-content>
+<!--
+        <ion-footer-bar align-title="left" class="bar-positive">
+            <a class="button button-block button-small button-positive" ng-click="submit()" ng-disabled="!(defectForm.defectItems.length)">Submit</a>
+            <div class="buttons" ng-click="doSomething()">
+            <button class="button">Right Button</button>
+          </div>
+        </ion-footer-bar>
+-->
+        
         <div class="ion-content-footer">
             <div class="padding">
-                <a class="button button-block button-energized" href="#/app/create-defect-defectarealocation">Add New Defect Item</a>
+<!--                <a class="button button-block button-energized" href="#/app/create-defect-defectarealocation">Add New Defect Item</a>-->
                 <a class="button button-block button-positive" ng-click="submit()" ng-disabled="!(defectForm.defectItems.length)">Submit</a>
             </div>
-        </div>>
+        </div>
     </ion-content>
 </ion-view>

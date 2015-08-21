@@ -1,0 +1,77 @@
+<ion-view view-title="Defect Item" id="create-defect-unit">
+    <ion-content>
+        <div class="list">
+            <label class="item item-input item-divider">
+                <span class="input-label"><b>Project</b></span>
+                <input class="text-right full-width padding-md-right" type="text" disabled value="{{project.displayName}}">
+            </label>
+            <label class="item item-input item-divider">
+                <span class="input-label"><b>Unit</b></span>
+                <input class="text-right full-width padding-md-right" type="text" disabled value="{{unit.unitNo}}">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Defect Submit Date</span>
+                <input class="text-right" type="date" placeholder="" disabled ng-model="defectItem.defectSubmitDate">
+            </label>
+            <label class="item item-input" ng-hide="hideDefectStartDate">
+                <div class="input-label">Defect Start Date</div>
+                <input class="text-right" type="date" placeholder="" disabled ng-model="defectItem.defectStartDate">
+            </label>
+            <label class="item item-input" ng-hide="hideDefectCompletionDate">
+                <div class="input-label">Defect Completion Date</div>
+                <input class="text-right" type="date" placeholder="" disabled ng-model="defectItem.defectCompletionDate">
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Severity</div>
+                <select disabled name="defectItemSeverity" ng-model="defectItem.defectItemSeverity"
+                        ng-options="option.displayName for option in defectItemSeverityOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Defect Type</div>
+                <select disabled name="defectType" ng-model="defectItem.defectType"
+                        ng-options="option.displayName for option in defectTypeOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Defect Area</div>
+                <select disabled name="defectType" ng-model="defectItem.defectItemAreaLocation"
+                        ng-options="option.displayName for option in defectItemAreaLocationOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <div class="item item-input item-stacked-label item-input-image">
+                <div class="input-label">Defect's Location</div>
+                <div ng-if="defectItem.defectLocation" class="image margin-xs-vertical" ng-style="{'background-image': 'url(' + defectItem.defectLocation + ')'}">
+                </div>
+            </div>
+            <label class="item item-input item-select">
+                <div class="input-label">Reason Type</div>
+                <select disabled name="defectItemReason" ng-model="defectItem.defectItemReason"
+                        ng-options="option.displayName for option in defectItemReasonOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <label class="item item-input item-stacked-label item-input-textarea padding-xs-right">
+                <div class="input-label">Remark</div>
+                <div>
+                <textarea disabled autogrow row=3 class="margin-xs-vertical margin-md-right" ng-model="defectItem.description">
+                
+                </textarea>
+                </div>
+            </label>
+            <label class="item item-input item-select">
+                <div class="input-label">Status</div>
+                <select disabled name="defectItemStatus" ng-model="defectItem.defectItemStatus"
+                        ng-options="option.displayName for option in defectItemStatusOptions track by option.id"
+                        >
+                </select>
+            </label>
+            <div class="padding padding-lg-vertical">
+                <a class="button button-block button-positive" ng-click="back()">Back</a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

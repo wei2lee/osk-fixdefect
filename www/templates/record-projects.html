@@ -3,7 +3,7 @@
        {{project.displayName}}
     </ion-nav-title>
     <ion-content>
-        <div class="list" ng-if="!(projects.length)">
+        <div class="list" ng-if="loading===false && !projects.length">
             <a class="item">
                 <button class="button button-clear">
                     There's no defect Item in any project yet

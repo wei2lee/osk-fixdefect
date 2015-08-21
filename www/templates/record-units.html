@@ -1,6 +1,6 @@
 <ion-view view-title="Records">
     <ion-content>
-        <div class="list" ng-if="!(units.length)">
+        <div class="list" ng-if="loading===false && !units.length">
             <a class="item">
                 <button class="button button-clear">
                     There's no defect Item in any project yet

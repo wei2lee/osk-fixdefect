@@ -2,13 +2,19 @@
     <ion-nav-title>
        {{unit.unitNo}}
     </ion-nav-title>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ng-click="openFilter()">
+            Filter
+        </button>
+    </ion-nav-buttons>
     <ion-content>
             <ion-list class="card">
-                <ion-item class="fade-animation" ng-repeat="defectItem in defectItems">
+                <ion-item class="item-icon-right fade-animation item-thumbnail-left defect-item" ng-repeat="defectItem in defectItems" href="#/app/record-defectitem/{{defectItem.id}}">
+                    <img ng-src="{{defectItem.defectLocation}}">
                     <table style="table-layout:fixed; width:100%;">
                     <colgroup>
-                        <col style="width:130px;">
-                        <col style="width:15px;">
+                        <col style="width:110px;">
+                        <col style="width:10px;">
                         <col style="">
                     </colgroup>
                         
@@ -16,21 +22,24 @@
                         <td></td><td></td><td></td>
                     </tr>
                     <tr>
-                        <td style="word-wrap:break-all;" colspan=3>
+                        <td colspan=3>
                             <p>{{defectItem.defectType.displayName}}</p>
                         </td>
                     </tr>
                     <tr>
-                        <td style="" class="padding-xs-top">Status&nbsp;</td><td style="">&nbsp;:&nbsp;</td><td class="text-left">&nbsp;{{defectItem.defectItemStatus.displayName}}</td>
+                        <td style="" class="">Status&nbsp;</td><td style="">&nbsp;:&nbsp;</td><td class="text-left">&nbsp;{{defectItem.defectItemStatus.displayName}}</td>
                     </tr>
                     <tr>
-                        <td class="padding-xs-top">Defect Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate | date:'MMM dd, yyyy'}}</td>
+                        <td class="">Submit Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectSubmitDate?(defectItem.defectSubmitDate | date:'MMM dd, yyyy'):'-'}}</td>
                     </tr>
                     <tr>
-                        <td class="padding-xs-top">Completion Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.completionDate | date:'MMM dd, yyyy'}}</td>
+                        <td class="">Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate?(defectItem.defectStartDate | date:'MMM dd, yyyy'):'-'}}}</td>
+                    </tr>
+                    <tr>
+                        <td class="">Completion Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectCompletionDate?(defectItem.defectCompletionDate | date:'MMM dd, yyyy'):'-'}}</td>
                     </tr>
                     </table>
-<!--                    <i class="icon ion-chevron-right icon-accessory"></i>-->
+                    <i class="icon ion-chevron-right icon-accessory"></i>
                 </ion-item>
             </ion-list>
     </ion-content>

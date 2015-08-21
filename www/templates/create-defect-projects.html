@@ -1,5 +1,8 @@
 <ion-view view-title="Create Defect">
     <ion-content>
+        <ion-item ng-if="loading===false && !projects.length" class="ion-empty-list-hint-item">
+            <a class="button button-clear button-positive" href="">There's no project in system yet.</a>
+        </ion-item>
         <div class="list card fade-in-animation" ng-repeat="project in projects">
             <a href="#/app/create-defect-project/{{project.id}}" class="item item-icon-left item-thumbnail-left">
                 <img ng-src="{{project.thumb}}">
