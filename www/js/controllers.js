@@ -401,21 +401,29 @@ angular.module('starter.controllers', ["services"])
         $scope.modal = modal;
         console.log('init modal');
     });
+    $scope.setShowFilterIndex = function(i) {
+        $scope.filter.showFilterIndex = i;   
+        if(i === 0) {
+            $scope.filter.title = "Select Defect Type";
+        }else if(i === 1){
+            $scope.filter.title = "Select Defect Status";
+        }else{
+            $scope.filter.title = "Filters";
+        }
+    }
     $scope.closeFilter = function () {
         $scope.modal.hide();
     };
 
     $scope.openFilter = function () {
+        $scope.setShowFilterIndex(-1);
         $scope.modal.show();
-        $scope.filter.title = 'Filter';
-        var modalHidden = $scope.$on('modal.hidden', function () {
-            modalHidden();
-        });
     };
     $scope.clearFilter = function() {
         $scope.filter.defectType = null;
         $scope.filter.defectItemStatus = null;
     }
+
     
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {

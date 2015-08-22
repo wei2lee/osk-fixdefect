@@ -685,7 +685,7 @@ ion-item.defect-item {
     }
     
     .slide-right-left-animation {
-        transition: 1s ease-out all;
+        transition: 0.2s ease-out all;
         left:100%;
         &.show {   
             left:0%;

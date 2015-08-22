@@ -4,13 +4,12 @@
     </ion-header-bar>
     
     <ion-content id="select-filter">
-        --{{filter.showFilterIndex}}--
         <ion-list>
-            <ion-item class="item-icon-right" ng-click="openFilterDetail()" ng-click="filter.showFilterIndex = 0; ">
+            <ion-item class="item-icon-right" ng-click="setShowFilterIndex(0); ">
                 Defect Type
                 <i class="icon ion-chevron-right icon-accessory"></i>
             </ion-item>
-            <ion-item class="item-icon-right" ng-click="openFilterDetail()" ng-click="filter.showFilterIndex = 1; ">
+            <ion-item class="item-icon-right" ng-click="setShowFilterIndex(1); ">
                 Defect Status
                 <i class="icon ion-chevron-right icon-accessory"></i>
             </ion-item>
@@ -19,7 +18,7 @@
     
     <ion-content ng-class="{'show':filter.showFilterIndex==0}" class=" slide-right-left-animation" id="option-defecttype">
         <ion-list>
-            <ion-item ng-repeat="option in filter.defectTypeOptions">
+            <ion-item ng-repeat="option in filter.defectTypeOptions" ng-click="filter.defectType = option; closeFilter(); ">
                 {{option.displayName}}
             </ion-item>
         </ion-list>
@@ -27,7 +26,7 @@
     
     <ion-content ng-class="{'show':filter.showFilterIndex==1}" class=" slide-right-left-animation " id="option-defectstatus">
         <ion-list>
-            <ion-item ng-repeat="option in filter.defectStatusOptions">
+            <ion-item ng-repeat="option in filter.defectItemStatusOptions" ng-click="filter.defectItemStatus = option; closeFilter(); ">
                 {{option.displayName}}
             </ion-item>
         </ion-list>
