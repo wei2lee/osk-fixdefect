@@ -3,10 +3,13 @@
 angular.module('starter.controllers', ["services"])
 
 .controller('AppCtrl', function () {
+    
+
+    
 })
 
 
-.controller('CreateDefectProjectsCtrl', function ($q, $scope, u, $state, apiProject) {
+.controller('CreateDefectProjectsCtrl', function ($timeout, $ionicModal, $q, $scope, u, $state, apiProject) {
 
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
@@ -202,7 +205,7 @@ angular.module('starter.controllers', ["services"])
                     $scope.defectForm.defectItem = {};
                     $scope.defectForm.defectItem.project = defectForm.project;
                     $scope.defectForm.defectItem.unit = defectForm.unit;
-                    $scope.defectForm.defectItem.defectStartDate = new Date();
+                    $scope.defectForm.defectItem.defectSubmitDate = new Date();
                     $scope.defectForm.defectItem.defectLocation = '';
                     $scope.defectForm.defectItem.defectType = _.first($scope.defectForm.defectTypeOptions);
                     $scope.defectForm.defectItem.defectItemSeverity = _.first($scope.defectForm.defectItemSeverityOptions);
@@ -321,9 +324,6 @@ angular.module('starter.controllers', ["services"])
     
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
-            $scope.hideDefectStartDate = true;
-            $scope.hideDefectCompletionDate = true;
-            
             $scope.defectForm = defectForm;
             //$scope.defectForm.project = {displayName:'hahaha'};
         }
@@ -399,26 +399,29 @@ angular.module('starter.controllers', ["services"])
         animation: 'slide-in-up'
     }).then(function (modal) {
         $scope.modal = modal;
-        
         console.log('init modal');
     });
-    $scope.closeModal = function () {
+    $scope.closeFilter = function () {
         $scope.modal.hide();
     };
 
     $scope.openFilter = function () {
         $scope.modal.show();
+        $scope.filter.title = 'Filter';
         var modalHidden = $scope.$on('modal.hidden', function () {
             modalHidden();
         });
     };
+    $scope.clearFilter = function() {
+        $scope.filter.defectType = null;
+        $scope.filter.defectItemStatus = null;
+    }
     
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
             $scope.defectItems = [];
             $scope.filter = {};
             u.showProgress();
-            
             $q.all ([
                 apiDefectItemAreaLocation.getAll(),
                 apiDefectItemReason.getAll(),
@@ -426,21 +429,15 @@ angular.module('starter.controllers', ["services"])
                 apiDefectItemSeverity.getAll(),
                 apiDefectType.getAll(),
                 apiDefectItem.getByUnitId($state.params.id)
-                
             ]).then(function(results) {
                 $scope.filter.defectItemAreaLocationOptions = results[0];
                 $scope.filter.defectItemReasonOptions =  results[1];
                 $scope.filter.defectItemStatusOptions =  results[2];
                 $scope.filter.defectItemSeverityOptions = results[3];
                 $scope.filter.defectTypeOptions = results[4];
-                
-                
-                
                 $scope.filter.defectType = null;
                 $scope.filter.defectItemStatus = null;
-                
                 $scope.defectItems = results[5]; 
-                
             }).catch(function(error) {
                 u.showError(error);
             }).finally(function() {

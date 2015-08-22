@@ -524,6 +524,18 @@ $zoom: 1.7;
     stroke: $yellow;
   }
 }
+
+
+/* ==========================================================================
+   Fix Black screen during transition 
+http://forum.ionicframework.com/t/brief-black-screen-during-navigation/9480/44
+   ========================================================================== */
+
+[nav-view-transition="ios"][nav-view-direction="forward"], [nav-view-transition="ios"][nav-view-direction="back"] {
+  background-color: transparent;
+}
+
+
 /* ==========================================================================
    End Loading
    ========================================================================== */
@@ -660,9 +672,24 @@ ion-item.defect-item {
 
 
 #filter-defect-item-modal {
-    @media (min-width: 680px) {
-        top:35%;
-        bottom:35%;
+    #select-filter {
+        
+    }
+    
+    #option-defecttype {
+        
+    }
+    
+    #option-defectstatus {
+        
+    }
+    
+    .slide-right-left-animation {
+        transition: 1s ease-out all;
+        left:100%;
+        &.show {   
+            left:0%;
+        }
     }
 }
 
@@ -685,6 +712,15 @@ ion-item.defect-item {
         border:solid 1px #eee;
         padding-right:20px;
     }
+}
+
+/* ==========================================================================
+   ion-footer-bar
+   ========================================================================== */
+ion-footer-bar {
+//    .button.button-block, .button.button-full {
+//        margin-top:0;   
+//    }
 }
 
 /* ==========================================================================
@@ -769,5 +805,4 @@ ion-item.defect-item {
         bottom:0;
     }
 }
-
 

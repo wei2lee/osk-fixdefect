@@ -1,35 +1,41 @@
 <ion-modal-view id="filter-defect-item-modal">
     <ion-header-bar class="bar-positive">
-        <h1 class="title">Filter Defect Item</h1>
+        <h1 class="title">{{filter.title}}</h1>
     </ion-header-bar>
     
-    <ion-content>
+    <ion-content id="select-filter">
+        --{{filter.showFilterIndex}}--
         <ion-list>
-            <label class="item item-input item-select">
-                <div class="input-label">Defect Type</div>
-                <select name="defectType" ng-model="filter.defectType"
-                        ng-options="option.displayName for option in filter.defectTypeOptions track by option.id"
-                        >
-                </select>
-            </label>
-            <label class="item item-input item-select">
-                <div class="input-label">Status</div>
-                <select name="defectItemStatus" ng-model="filter.defectItemStatus"
-                        ng-options="option.displayName for option in filter.defectItemStatusOptions track by option.id"
-                        >
-                </select>
-            </label>
+            <ion-item class="item-icon-right" ng-click="openFilterDetail()" ng-click="filter.showFilterIndex = 0; ">
+                Defect Type
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
+            <ion-item class="item-icon-right" ng-click="openFilterDetail()" ng-click="filter.showFilterIndex = 1; ">
+                Defect Status
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
         </ion-list>
-
     </ion-content>
-    <ion-footer-bar align-title="left" class="">
-        <div class="row padding-0" style="padding-top:0; padding-bottom:0;">
-            <div class="col " style="padding-top:0; padding-bottom:0;">
-                <button class="button button-block button-positive " style="padding:0;margin:0;" ng-click="closeModal()">Apply</button>
-            </div>
-            <div class="col padding-0" style="padding-top:0; padding-bottom:0;">
-                <button class="button button-block button-positive " style="padding:0;margin:0;" ng-click="closeModal()">Reset</button>
-            </div>
-        </div>
+    
+    <ion-content ng-class="{'show':filter.showFilterIndex==0}" class=" slide-right-left-animation" id="option-defecttype">
+        <ion-list>
+            <ion-item ng-repeat="option in filter.defectTypeOptions">
+                {{option.displayName}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
+    
+    <ion-content ng-class="{'show':filter.showFilterIndex==1}" class=" slide-right-left-animation " id="option-defectstatus">
+        <ion-list>
+            <ion-item ng-repeat="option in filter.defectStatusOptions">
+                {{option.displayName}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
+    
+    
+    <ion-footer-bar align-title="center" class="bar-calm" ng-click="closeModal()" >
+        <h1 ng-if="!filter.showFilterDefectType && !filter.showFilterDefectStatus" class="title">Close</h1>
+        <h1 ng-if="filter.showFilterDefectType || filter.showFilterDefectStatus" class="title">Apply</h1>
     </ion-footer-bar>
 </ion-modal-view>   

@@ -1,9 +1,4 @@
 <ion-view view-title="Defects" id="defectslist">
-<!--
-    <ion-nav-title>
-       {{defectForm.unit.unitNo}}
-    </ion-nav-title>
--->
     <ion-nav-buttons side="right">
         <a class="button button-clear" href="#/app/create-defect-defectarealocation">
             Add
@@ -33,7 +28,7 @@
                     <img ng-src="{{defectItem.defectLocation}}">
                     <table style="table-layout:fixed; width:100%;">
                     <colgroup>
-                        <col style="width:110px;">
+                        <col style="width:95px;">
                         <col style="width:10px;">
                         <col style="">
                     </colgroup>
@@ -53,7 +48,7 @@
                         <td class="">Submit Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectSubmitDate?(defectItem.defectSubmitDate | date:'MMM dd, yyyy'):'-'}}</td>
                     </tr>
                     <tr>
-                        <td class="">Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate?(defectItem.defectStartDate | date:'MMM dd, yyyy'):'-'}}}</td>
+                        <td class="">Start Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectStartDate?(defectItem.defectStartDate | date:'MMM dd, yyyy'):'-'}}</td>
                     </tr>
                     <tr>
                         <td class="">Completion Date&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectItem.defectCompletionDate?(defectItem.defectCompletionDate | date:'MMM dd, yyyy'):'-'}}</td>
@@ -75,7 +70,7 @@
         <div class="ion-content-footer">
             <div class="padding">
 <!--                <a class="button button-block button-energized" href="#/app/create-defect-defectarealocation">Add New Defect Item</a>-->
-                <a class="button button-block button-positive" ng-click="submit()" ng-disabled="!(defectForm.defectItems.length)">Submit</a>
+                <a class="button button-block button-calm" ng-click="submit()" ng-disabled="!(defectForm.defectItems.length)">Submit</a>
             </div>
         </div>
     </ion-content>

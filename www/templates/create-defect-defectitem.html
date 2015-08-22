@@ -6,18 +6,26 @@
     </ion-nav-buttons>
     <ion-content>
         <div class="list">
-            <label class="item item-input item-divider">
-                <span class="input-label"><b>Project</b></span>
-                <input class="text-right full-width padding-md-right" type="text" disabled value="{{defectForm.project.displayName}}">
-            </label>
-            <label class="item item-input item-divider">
-                <span class="input-label"><b>Unit</b></span>
-                <input class="text-right full-width padding-md-right" type="text" disabled value="{{defectForm.unit.unitNo}}">
-            </label>
+            <div class="item">
+                <table>
+                    <tr>
+                        <td>Project&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectForm.project.displayName}}</td>
+                    </tr>
+                    <tr>
+                        <td class="padding-top">UnitNo&nbsp;</td><td>&nbsp;:&nbsp;</td><td>&nbsp;{{defectForm.unit.unitNo}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="list">
+
+
             <label class="item item-input">
                 <span class="input-label">Defect Submit Date</span>
                 <input class="text-right" type="date" placeholder="" ng-model="defectForm.defectItem.defectSubmitDate">
             </label>
+<!--
             <label class="item item-input" ng-hide="hideDefectStartDate">
                 <div class="input-label">Defect Start Date</div>
                 <input class="text-right" type="date" placeholder="" ng-model="defectForm.defectItem.defectStartDate">
@@ -26,6 +34,7 @@
                 <div class="input-label">Defect Completion Date</div>
                 <input class="text-right" type="date" placeholder="" ng-model="defectForm.defectItem.defectCompletionDate">
             </label>
+-->
             <label class="item item-input item-select">
                 <div class="input-label">Severity</div>
                 <select name="defectItemSeverity" ng-model="defectForm.defectItem.defectItemSeverity"
@@ -79,7 +88,7 @@
                 </select>
             </label>
             <div class="padding padding-lg-vertical">
-                <a class="button button-block button-positive" ng-click="done()">Done</a>
+                <a class="button button-block button-calm" ng-click="done()">Done</a>
             </div>
         </div>
 <!--
