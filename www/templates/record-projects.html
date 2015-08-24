@@ -3,12 +3,9 @@
        {{project.displayName}}
     </ion-nav-title>
     <ion-content>
-        <div class="list" ng-if="loading===false && !projects.length">
-            <a class="item">
-                <button class="button button-clear">
-                    There's no defect Item in any project yet
-                </button>
-            </a>
+        <ion-item ng-if="loading===false && !projects.length" class="ion-empty-list-hint-item" ng-click="showFilterBar()">
+            <a class="button button-clear" href="">There's no default item in any project.</a>
+        </ion-item>
         </div>
         <div class="list card fade-in-animation" ng-repeat="project in projects">
             <a href="#/app/record-units/{{project.id}}" class="item item-icon-left item-thumbnail-left">

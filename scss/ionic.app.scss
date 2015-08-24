@@ -647,10 +647,6 @@ ion-side-menu {
 
 }
 
-.button.button-full.footer-button {
-    margin-bottom:0;
-    margin-top:0;
-}
 
 ion-item.defect-item {
     font-size:12px;   
@@ -669,29 +665,6 @@ ion-item.defect-item {
     }
 }
 
-
-
-#filter-defect-item-modal {
-    #select-filter {
-        
-    }
-    
-    #option-defecttype {
-        
-    }
-    
-    #option-defectstatus {
-        
-    }
-    
-    .slide-right-left-animation {
-        transition: 0.2s ease-out all;
-        left:100%;
-        &.show {   
-            left:0%;
-        }
-    }
-}
 
 /* ==========================================================================
    Form
@@ -717,10 +690,15 @@ ion-item.defect-item {
 /* ==========================================================================
    ion-footer-bar
    ========================================================================== */
+.button.button-full.footer-button {
+    margin-bottom:0;
+    margin-top:0;
+}
 ion-footer-bar {
-//    .button.button-block, .button.button-full {
-//        margin-top:0;   
-//    }
+    .button.button-full.footer-button {
+        line-height:42px;
+        font-weight: 900;
+    }
 }
 
 /* ==========================================================================
@@ -806,3 +784,26 @@ ion-footer-bar {
     }
 }
 
+
+
+#filter-defect-item-modal {
+    #select-filter {
+        
+    }
+    
+    #option-defecttype {
+        z-index:10;
+    }
+    
+    #option-defectstatus {
+        z-index:10;
+    }
+    
+    .slide-right-left-animation {
+        transition: 0.2s ease-out all;
+        left:100%;
+        &.show {   
+            left:0%;
+        }
+    }
+}

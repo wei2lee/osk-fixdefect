@@ -101,7 +101,7 @@ angular.module('route', ['ionic'])
     })
     
     .state('app.record-defectitems', {
-        url: '/record-defectitems/{id}',
+        url: '/record-defectitems/{unitId}',
         views: {
             'menuContent': {
                 templateUrl: 'templates/record-defectitems.html',
@@ -111,7 +111,7 @@ angular.module('route', ['ionic'])
     })
     
     .state('app.record-defectitem', {
-        url: '/record-defectitem/{id}',
+        url: '/record-defectitem/{defectItemId}',
         views: {
             'menuContent': {
                 templateUrl: 'templates/record-defectitem.html',

@@ -8,12 +8,12 @@
         </button>
     </ion-nav-buttons>
     <ion-content>
-        <ion-item ng-if="!(defectItems.length)" class="ion-empty-list-hint-item" ng-click="showFilterBar()">
-            <a class="button button-clear button-positive" href="">No defect item for current filter setup. Tap to specifc new filter.</a>
+        <ion-item  ng-if="loading===false" class="ion-empty-list-hint-item" ng-click="showFilterBar()">
+            <a class="button button-clear button-positive" ng-click="openFilter()">{{filterSetupDescription()}}<br/><span ng-if="getFilteredDefectItems().length==0">There's no defect item for current filter setup.</span> Tap to specifc new filter.</a>
         </ion-item>
         <ion-list class="card">
             
-            <ion-item class="item-icon-right fade-animation item-thumbnail-left defect-item" ng-repeat="defectItem in defectItems" href="#/app/record-defectitem/{{defectItem.id}}">
+            <ion-item class="item-icon-right fade-animation item-thumbnail-left defect-item" ng-repeat="defectItem in getFilteredDefectItems()" href="#/app/record-defectitem/{{defectItem.id}}">
                 <img ng-src="{{defectItem.defectLocation}}">
                 <table style="table-layout:fixed; width:100%;">
                 <colgroup>

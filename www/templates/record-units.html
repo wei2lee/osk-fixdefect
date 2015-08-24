@@ -1,12 +1,8 @@
 <ion-view view-title="Records">
     <ion-content>
-        <div class="list" ng-if="loading===false && !units.length">
-            <a class="item">
-                <button class="button button-clear">
-                    There's no defect Item in any project yet
-                </button>
-            </a>
-        </div>
+        <ion-item ng-if="loading===false && !units.length" class="ion-empty-list-hint-item" ng-click="showFilterBar()">
+            <a class="button button-clear" href="">There's no defect item in any unit.</a>
+        </ion-item>        
         <div class="list card fade-in-animation" ng-repeat="unit in units">
             <a href="#/app/record-defectitems/{{unit.id}}" class="item item-icon-left item-thumbnail-left">
                 <img ng-src="{{unit.project.thumb}}">

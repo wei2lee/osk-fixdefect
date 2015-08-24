@@ -745,14 +745,29 @@ angular.module('services-api', [])
     return new apiBaseService(values,$q,$timeout);
 })
 
-.service('apiDefectItem', function($q,$timeout,apiUnit) {
+.service('apiDefectItem', function($q,$timeout,
+                                    apiUnit,
+                                    apiDefectType,
+                                    apiDefectItemSeverity,
+                                    apiDefectItemReason,
+                                    apiDefectItemStatus
+                                   
+                                   ) {
     var values = [];
     
     var unit = _.sample(apiUnit.values);
     
     values.push({
-        'project':unit.project,
+        id:0,
+        project:unit.project,
         'unit':unit,
+        defectSubmitDate : new Date(),
+        defectLocation : 'img/defect/ceiling-crack-repair.jpg',
+        defectType : _.sample(apiDefectType.values),
+        defectItemSeverity : _.sample(apiDefectItemSeverity.values),
+        defectItemReason : _.sample(apiDefectItemReason.values),
+        defectItemStatus : _.sample(apiDefectItemStatus.values),
+        defectItemAreaLocation : unit.floorplans[0].areas[0].areaLocation
     });
     
     return new apiBaseService(values,$q,$timeout);

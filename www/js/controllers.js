@@ -214,7 +214,7 @@ angular.module('starter.controllers', ["services"])
                     $scope.defectForm.defectItem.defectItemAreaLocation = $scope.defectForm.unit.floorplans[0].areas[0].areaLocation;
                 }
                 
-                //its hard to put thing together, maphighlight + responsive map area + ionic
+                //these several things conflicts, maphighlight + responsive map area + ionic
 //                $timeout(function() {
 //                    $map = $('img[usemap="#auto"]');
 //                    console.log($map.length);
@@ -333,11 +333,12 @@ angular.module('starter.controllers', ["services"])
 
 .controller('RecordProjectsCtrl', function ($scope, u, $state, apiDefectItem) {
     var _this = this;
+    console.log($scope.loading===false && !($scope.projects.length));
     $scope.$on('$ionicView.beforeEnter', function (viewInfo, state) {
         if(state.direction != 'back') {
-            $scope.projects = [];
             u.showProgress();
-            $scope.loading = false;
+            $scope.projects = [];
+            $scope.loading = true;
             apiDefectItem.getAll().then(function(results) {
                 var defectItems = results;  
                 var defectItemsByProjectIds = _.groupBy (defectItems, function(o) { return o.project.id; });
@@ -346,14 +347,14 @@ angular.module('starter.controllers', ["services"])
                     var defectItemsByUnitIds = _.groupBy (defectItemsByProjectIds[projectId], function(o) { return o.unit.id; });
                     var p = jQuery.extend(true, {}, project);
                     p.noOfUnits = _.size(defectItemsByUnitIds);
-                    console.log(p);
                     $scope.projects.push(p);
                 }
             }).catch(function(error) {
                 u.showError(error);
             }).finally(function() {
-                $scope.loading = true;
+                $scope.loading = false;
                  u.hideProgress();
+                console.log($scope.loading===false && !$scope.projects.length);
             });
         }
     });
@@ -365,7 +366,7 @@ angular.module('starter.controllers', ["services"])
         if(state.direction != 'back') {
             $scope.units = [];
             u.showProgress();
-            $scope.loading = false;
+            $scope.loading = true;
             apiDefectItem.getByProjectId($state.params.projectId).then(function(results) {
                 var defectItems = results;  
                 var defectItemsByUnitIds = _.groupBy(defectItems, function(o) { return o.unit.id; });
@@ -377,7 +378,7 @@ angular.module('starter.controllers', ["services"])
             }).catch(function(error) {
                 u.showError(error);
             }).finally(function() {
-                $scope.loading = true;
+                $scope.loading = false;
                  u.hideProgress();
             });
         }
@@ -399,7 +400,6 @@ angular.module('starter.controllers', ["services"])
         animation: 'slide-in-up'
     }).then(function (modal) {
         $scope.modal = modal;
-        console.log('init modal');
     });
     $scope.setShowFilterIndex = function(i) {
         $scope.filter.showFilterIndex = i;   
@@ -417,11 +417,35 @@ angular.module('starter.controllers', ["services"])
 
     $scope.openFilter = function () {
         $scope.setShowFilterIndex(-1);
+        $scope.resetFilter();
         $scope.modal.show();
     };
+    $scope.resetFilter = function() {
+        $scope.filter.defectType = null;
+        $scope.filter.defectItemStatus = null;
+    }
     $scope.clearFilter = function() {
         $scope.filter.defectType = null;
         $scope.filter.defectItemStatus = null;
+    }
+    $scope.checkFilter = function(defectItem) {
+        var ret = (!$scope.filter.defectType || $scope.filter.defectType.id==defectItem.defectType.id) &&
+                (!$scope.filter.defectItemStatus || $scope.filter.defectItemStatus.id==defectItem.defectItemStatus.id)
+        return ret;
+    }
+    $scope.getFilteredDefectItems = function() {
+        return _.filter($scope.defectItems, function(o){
+            return $scope.checkFilter(o);
+        });
+    }
+    $scope.filterSetupDescription = function() {
+        if($scope.filter.defectType) {
+            return 'Filtered by Defect Type : '+$scope.filter.defectType.displayName+'';
+        }else if($scope.filter.defectItemStatus) {
+            return 'Filtered by Defect Status : '+$scope.filter.defectItemStatus.displayName+'';
+        }else{
+            return 'No filter';   
+        }
     }
 
     
@@ -429,6 +453,7 @@ angular.module('starter.controllers', ["services"])
         if(state.direction != 'back') {
             $scope.defectItems = [];
             $scope.filter = {};
+            $scope.loading = true;
             u.showProgress();
             $q.all ([
                 apiDefectItemAreaLocation.getAll(),
@@ -436,20 +461,25 @@ angular.module('starter.controllers', ["services"])
                 apiDefectItemStatus.getAll(),
                 apiDefectItemSeverity.getAll(),
                 apiDefectType.getAll(),
-                apiDefectItem.getByUnitId($state.params.id)
+                apiDefectItem.getByUnitId($state.params.unitId)
             ]).then(function(results) {
                 $scope.filter.defectItemAreaLocationOptions = results[0];
                 $scope.filter.defectItemReasonOptions =  results[1];
                 $scope.filter.defectItemStatusOptions =  results[2];
                 $scope.filter.defectItemSeverityOptions = results[3];
                 $scope.filter.defectTypeOptions = results[4];
-                $scope.filter.defectType = null;
-                $scope.filter.defectItemStatus = null;
                 $scope.defectItems = results[5]; 
+                
+                $scope.resetFilter();
+                if($scope.defectItems.length)
+                    $scope.unit = $scope.defectItems[0].unit;
+                
+                
             }).catch(function(error) {
                 u.showError(error);
             }).finally(function() {
                  u.hideProgress();
+                $scope.loading = false;
             });
         }
     });
@@ -480,7 +510,7 @@ angular.module('starter.controllers', ["services"])
                 apiDefectItemStatus.getAll(),
                 apiDefectItemSeverity.getAll(),
                 apiDefectType.getAll(),
-                apiDefectItem.getById($state.params.id)
+                apiDefectItem.getById($state.params.defectItemId)
             ]).then(function(results) {
                 
                 $scope.defectItemAreaLocationOptions = results[0];
