@@ -440,9 +440,9 @@ angular.module('starter.controllers', ["services"])
     }
     $scope.filterSetupDescription = function() {
         if($scope.filter.defectType) {
-            return 'Filtered by Defect Type : '+$scope.filter.defectType.displayName+'';
+            return 'Filtered by Defect Type : '+$scope.filter.defectType.displayName+'.';
         }else if($scope.filter.defectItemStatus) {
-            return 'Filtered by Defect Status : '+$scope.filter.defectItemStatus.displayName+'';
+            return 'Filtered by Defect Status : '+$scope.filter.defectItemStatus.displayName+'.';
         }else{
             return 'No filter';   
         }
